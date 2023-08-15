@@ -1,0 +1,7 @@
+
+{% with image2 = url_for('bar_chart') %}
+{% if image2 %}
+    <h2>Total Population Prediction by Year</h2>
+    <img src="{{ image2 }}" alt="Bar Chart" class="img-fluid mt-3">
+{% endif %}
+{% endwith %}
