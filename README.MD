@@ -1,5 +1,10 @@
 ## UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth (Web Application)
 
+![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/1.png)
+![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/2.png)
+![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/3.png)
+
+
 ## XAMPP Specifications
 
 | Tool            | Version                             |
@@ -10,7 +15,7 @@
 | PHP             | 8.2.4                               |
 | phpMyAdmin      | 5.2.1 (up to date)                   |
 
-## Python Specifications
+## Python Specifications 
 
 | Tool            | Version                             |
 |-----------------|-------------------------------------|
