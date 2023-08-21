@@ -34,7 +34,7 @@ include_once 'functions/authentication.php';
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Prediction - Population</h3>
         </div>
-    </div><iframe src="http://127.0.0.1:5000/population" frameborder="0" allowtransparency="true" width="100%" height="750px"></iframe>
+    </div><iframe src="http://<?php echo $localIP;?>:5000/population" frameborder="0" allowtransparency="true" width="100%" height="750px"></iframe>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
