@@ -80,6 +80,7 @@ new DataTable('table.table-display',{
             var phone = $(this).data('phone');
             var sex = $(this).data('sex');
             var address = $(this).data('address');
+            var purok = $(this).data('purok');
 
             $('input[name="data_id"]').val(id);
             $('input[name="firstname"]').val(firstname);
@@ -90,8 +91,9 @@ new DataTable('table.table-display',{
             $('input[name="phone"]').val(phone);
             $('input[name="sex"]').val(sex);
             $('input[name="address"]').val(address);
+            $('select[name="purok"]').val(purok);
             
-            console.log(id);
+            console.log(id, purok);
         });
         $('button[data-bs-target="#remove"]').on('click', function() {
             var id = $(this).data('id');

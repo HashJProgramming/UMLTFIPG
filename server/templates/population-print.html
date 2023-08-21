@@ -5,16 +5,15 @@
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
-<body>
+<body onload="printPageAndRedirect()">
     <div class="container">
         {% if results %}
-            <h2 class="mt-4">Budget Prediction Results</h2>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Year</th>
-                        <th>Project</th>
-                        <th>Funds</th>
+                        <th>Purok</th>
+                        <th>Population</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,10 +22,10 @@
                         <td>{{ result.Year }}</td>
                         <td colspan="2">
                             <table class="table table-bordered table-display">
-                                {% for project_result in result.ProjectResult %}
+                                {% for purok_result in result.PurokResults %}
                                 <tr>
-                                    <td>{{ project_result.Project.upper() }}</td>
-                                    <td>₱{{ "{:,.2f}".format(project_result.Fund) }}</td>
+                                    <td>{{ purok_result.Purok.upper() }}</td>
+                                    <td>{{ "{:,.2f}".format(purok_result.Population) }}</td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -37,6 +36,13 @@
             </table>
         {% endif %}
     </div>
-
+    <script>
+        function printPageAndRedirect() {
+            window.print();
+            setTimeout(function() {
+                window.location.href = 'project.php';
+            }, 1000); // Redirect after 1 second (adjust as needed)
+        }
+    </script>
 </body>
 </html>

@@ -47,11 +47,13 @@ include_once 'functions/get-tables.php';
                     <table class="table my-0 table-display" id="dataTable">
                         <thead>
                             <tr>
+                                <th>Picture</th>
                                 <th>Lastname</th>
                                 <th>Firstname</th>
                                 <th>Middlename</th>
                                 <th>Suffix</th>
                                 <th>Phone</th>
+                                <th>Purok</th>
                                 <th>Address</th>
                                 <th>Sex</th>
                                 <th>Age</th>
@@ -120,10 +122,38 @@ include_once 'functions/get-tables.php';
                                                 </optgroup>
                                             </select>
                                         </div>
+                                        <div class="col">
+                                            <p><strong>Purok</strong><span class="text-danger">*</span></p><select class="form-select" name="purok">
+                                                <optgroup label="SELECT PUROK">
+                                                <option value="Acasia">Acasia</option>
+                                                <option value="Imelda I">Imelda I</option>
+                                                <option value="Imelda II">Imelda II</option>
+                                                <option value="Orchids">Orchids</option>
+                                                <option value="Mendoza">Mendoza</option>
+                                                <option value="Alcantara">Alcantara</option>
+                                                <option value="Bougainvilla">Bougainvilla</option>
+                                                <option value="Makugihon">Makugihon</option>
+                                                <option value="Rose">Rose</option>
+                                                <option value="Pelagio">Pelagio</option>
+                                                <option value="Enriquez">Enriquez</option>
+                                                <option value="Magsaysay">Magsaysay</option>
+                                                <option value="Gawasnon">Gawasnon</option>
+                                                <option value="Boundary">Boundary</option>
+                                                <option value="Pechay">Pechay</option>
+                                                <option value="San Francisco">San Francisco</option>
+                                                <option value="Cresencio Sajulga">Cresencio Sajulga</option>
+                                                <option value="Beti">Beti</option>
+                                                <option value="Lecuna">Lecuna</option>
+                                                <option value="Macrina">Macrina</option>
+                                                <option value="Durias">Durias</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
+                                    
                                 </div>
                                 <div class="form-group mb-3"><p><strong>Your Picture </strong><span class="text-danger">*</span></p>
                                     <div class="file">
@@ -205,6 +235,33 @@ include_once 'functions/get-tables.php';
                                                 <optgroup label="SELECT SEX">
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <p><strong>Purok</strong><span class="text-danger">*</span></p><select class="form-select" name="purok">
+                                                <optgroup label="SELECT PUROK">
+                                                <option value="Acasia">Acasia</option>
+                                                <option value="Imelda I">Imelda I</option>
+                                                <option value="Imelda II">Imelda II</option>
+                                                <option value="Orchids">Orchids</option>
+                                                <option value="Mendoza">Mendoza</option>
+                                                <option value="Alcantara">Alcantara</option>
+                                                <option value="Bougainvilla">Bougainvilla</option>
+                                                <option value="Makugihon">Makugihon</option>
+                                                <option value="Rose">Rose</option>
+                                                <option value="Pelagio">Pelagio</option>
+                                                <option value="Enriquez">Enriquez</option>
+                                                <option value="Magsaysay">Magsaysay</option>
+                                                <option value="Gawasnon">Gawasnon</option>
+                                                <option value="Boundary">Boundary</option>
+                                                <option value="Pechay">Pechay</option>
+                                                <option value="San Francisco">San Francisco</option>
+                                                <option value="Cresencio Sajulga">Cresencio Sajulga</option>
+                                                <option value="Beti">Beti</option>
+                                                <option value="Lecuna">Lecuna</option>
+                                                <option value="Macrina">Macrina</option>
+                                                <option value="Durias">Durias</option>
                                                 </optgroup>
                                             </select>
                                         </div>

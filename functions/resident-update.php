@@ -10,6 +10,7 @@ $phone = $_POST['phone'];
 $sex = $_POST['sex'];
 $birthdate = $_POST['birthdate'];
 $picture = $_FILES['picture'];
+$purok = $_POST['purok'];
 $fullname = $firstname.' '.$lastname.' '.$middlename.' '.$suffix;
 
 
@@ -32,6 +33,7 @@ phone = :phone,
 sex = :sex, 
 birthdate = :birthdate, 
 picture = :picture 
+purok = :purok 
 WHERE id = :id";
 
 $stmt = $db->prepare($sql);
@@ -44,6 +46,7 @@ $stmt->bindParam(':phone', $phone);
 $stmt->bindParam(':sex', $sex);
 $stmt->bindParam(':birthdate', $birthdate);
 $stmt->bindParam(':picture', $target_file);
+$stmt->bindParam(':purok', $purok);
 $stmt->bindParam(':id', $id);
 
 if (isset($picture) && $picture['error'] == 0) {

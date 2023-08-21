@@ -1,3 +1,4 @@
+import datetime
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -214,15 +215,22 @@ def graph_budget():
     buf = generate_budget_bar_plot(start_year, end_year)
     return Response(buf.getvalue(), mimetype='image/png')
 
-
 @app.route('/population-bar_chart_image')
 def bar_chart_population():
     start_year = 2023
     end_year = 2024
     image = generate_bar_year(start_year, end_year)
     return send_file(image, mimetype='image/png')
-import os
 
+@app.route('/budget-print', methods=['GET'])
+def budget_print():
+    current_year = datetime.datetime.now().year
+    return render_template('budget-print.html', results=get_budget_prediction(current_year, current_year + 10))
+
+@app.route('/population-print', methods=['GET'])
+def population_print():
+    current_year = datetime.datetime.now().year
+    return render_template('population-print.html', results=get_population_prediction(current_year, current_year + 10))
 
 if __name__ =='__main__':  
   app.run(debug=True, host='0.0.0.0')

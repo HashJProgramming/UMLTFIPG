@@ -10,6 +10,7 @@ $phone = $_POST['phone'];
 $sex = $_POST['sex'];
 $birthdate = $_POST['birthdate'];
 $picture = $_FILES['picture'];
+$purok = $_POST['purok'];
 $fullname = $firstname.' '.$lastname.' '.$middlename.' '.$suffix;
 
 $sql = "SELECT * 
@@ -34,7 +35,7 @@ if ($stmt->rowCount() > 0) {
 $target_dir = "resident-pictures/";
 $target_file = $target_dir . $fullname . '.' . pathinfo($picture['name'], PATHINFO_EXTENSION);
 
-$sql = "INSERT INTO residents (firstname, lastname, middlename, suffix, address, phone, sex, birthdate, picture) VALUES (:firstname, :lastname, :middlename, :suffix, :address, :phone, :sex, :birthdate, :picture)";
+$sql = "INSERT INTO residents (firstname, lastname, middlename, suffix, address, phone, sex, birthdate, picture, purok) VALUES (:firstname, :lastname, :middlename, :suffix, :address, :phone, :sex, :birthdate, :picture, :purok)";
 $stmt = $db->prepare($sql);
 $stmt->bindParam(':firstname', $firstname);
 $stmt->bindParam(':lastname', $lastname);
@@ -45,6 +46,7 @@ $stmt->bindParam(':phone', $phone);
 $stmt->bindParam(':sex', $sex);
 $stmt->bindParam(':birthdate', $birthdate);
 $stmt->bindParam(':picture', $target_file);
+$stmt->bindParam(':purok', $purok);
 if (move_uploaded_file($picture['tmp_name'], $target_file)) {
     if ($stmt->execute()) {
         generate_logs('Adding Customer', $fullname.'| New resident was added');
