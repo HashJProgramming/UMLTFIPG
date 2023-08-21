@@ -1,3 +1,4 @@
+// Hash'J Programming - https://github.com/HashJProgramming
 $(document).ready(function() {
     const currentPath = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
@@ -68,78 +69,38 @@ new DataTable('table.table-display',{
           )
     }
     
-    // if (currentPath.includes("/RMMFB/customers.php")) {
-    //     $('a[data-bs-target="#update"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         var fullname = $(this).data('fullname');
-    //         var address = $(this).data('address');
-    //         var phone = $(this).data('phone');
-    //         var email = $(this).data('email');
-    //         var date = $(this).data('birthdate');
+    if (currentPath.includes("UMLTFIPG/residents.php")) {
+        $('button[data-bs-target="#update"]').on('click', function() {
+            var id = $(this).data('id');
+            var firstname = $(this).data('firstname');
+            var lastname = $(this).data('lastname');
+            var middlename = $(this).data('middlename');
+            var suffix = $(this).data('suffix');
+            var birthdate = $(this).data('birthdate');
+            var phone = $(this).data('phone');
+            var sex = $(this).data('sex');
+            var address = $(this).data('address');
 
-    //     //    console.log(id, fullname, address, phone, email, date);
-    //         $('input[name="data_id"]').val(id);
-    //         $('input[name="name"]').val(fullname);
-    //         $('input[name="address"]').val(address);
-    //         $('input[name="phone"]').val(phone);
-    //         $('input[name="email"]').val(email);
-    //         $('input[name="date"]').val(date);
-    //     });
-
-    //   } else if (currentPath.includes("/RMMFB/staff.php")) {
-    //     $('a[data-bs-target="#update"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         var username = $(this).data('username');
-    //         console.log(id, username);
-
-    //         $('input[name="data_id"]').val(id);
-    //         $('input[name="username"]').val(username);
-
-    //     });
-    //   } else if (currentPath.includes("/RMMFB/inventory.php")) {
-    //     $('a[data-bs-target="#update"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         var name = $(this).data('name');
-    //         var description = $(this).data('description');
-    //         $('input[name="data_id"]').val(id);
-    //         $('input[name="name"]').val(name);
-    //         $('input[name="description"]').val(description);
-    //         console.log(id); 
-    //         $('input[name="data_id"]').val(id);
-    //     });
-
-    //     $('a[data-bs-target="#stock-in"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         console.log(id); 
-    //         $('input[name="data_id"]').val(id);
-    //     });
-
-    //     $('a[data-bs-target="#stock-out"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         console.log(id); 
-    //         $('input[name="data_id"]').val(id);
-    //     });
-    //   }else if (currentPath.includes("/RMMFB/rents.php")) {
-    //     $('a[data-bs-target="#return"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         $('input[name="data_id"]').val(id);
-    //         console.log(id); 
-    //     });
-
-    //     $('a[data-bs-target="#stock-in"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         console.log(id); 
-    //         $('input[name="data_id"]').val(id);
-    //     });
-
-    //     $('a[data-bs-target="#stock-out"]').on('click', function() {
-    //         var id = $(this).data('id');
-    //         console.log(id); 
-    //         $('input[name="data_id"]').val(id);
-    //     });
-    //   } else{
-    //     console.log("The URL is neither /customer nor /list");
-    //   }
+            $('input[name="data_id"]').val(id);
+            $('input[name="firstname"]').val(firstname);
+            $('input[name="lastname"]').val(lastname);
+            $('input[name="middlename"]').val(middlename);
+            $('input[name="suffix"]').val(suffix);
+            $('input[name="birthdate"]').val(birthdate);
+            $('input[name="phone"]').val(phone);
+            $('input[name="sex"]').val(sex);
+            $('input[name="address"]').val(address);
+            
+            console.log(id);
+        });
+        $('button[data-bs-target="#remove"]').on('click', function() {
+            var id = $(this).data('id');
+            $('input[name="data_id"]').val(id); 
+            console.log(id);
+        });
+      } else{
+        console.log("The URL is neither /customer nor /list");
+      }
 
 
 

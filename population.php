@@ -81,7 +81,7 @@ include_once 'functions/authentication.php';
                                     <th>Firstname</th>
                                     <th>Lastname</th>
                                     <th>Middlename</th>
-                                    <th>Prefix</th>
+                                    <th>Suffix</th>
                                     <th>Gender</th>
                                     <th>Age</th>
                                 </tr>
@@ -117,7 +117,7 @@ include_once 'functions/authentication.php';
                                     <th>Firstname</th>
                                     <th>Lastname</th>
                                     <th>Middlename</th>
-                                    <th>Prefix</th>
+                                    <th>Suffix</th>
                                     <th>Gender</th>
                                     <th>Age</th>
                                 </tr>

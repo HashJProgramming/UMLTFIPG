@@ -1,8 +1,18 @@
+/* Hash'J Programming - https://github.com/HashJProgramming */
 #upload {
+  opacity: 0;
+}
+#upload2 {
   opacity: 0;
 }
 
 #upload-label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+}
+#upload-label2 {
   position: absolute;
   top: 50%;
   left: 1rem;
@@ -34,6 +44,9 @@
 }
 
 input[type=number] {
+  -webkit-appearance: textfield;
+  appearance: textfield;
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 

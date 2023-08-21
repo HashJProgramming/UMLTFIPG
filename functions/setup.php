@@ -24,7 +24,7 @@
               firstname VARCHAR(255),
               lastname VARCHAR(255),
               middlename VARCHAR(255),
-              prefix VARCHAR(255),
+              suffix VARCHAR(255),
               address VARCHAR(255),
               phone VARCHAR(255),
               sex VARCHAR(255),

@@ -1,5 +1,6 @@
 <?php
 include_once 'functions/authentication.php';
+include_once 'functions/get-tables.php';
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -45,10 +46,11 @@ include_once 'functions/authentication.php';
                     <table class="table my-0 table-display" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Firstname</th>
                                 <th>Lastname</th>
+                                <th>Firstname</th>
                                 <th>Middlename</th>
-                                <th>Prefix</th>
+                                <th>Suffix</th>
+                                <th>Phone</th>
                                 <th>Address</th>
                                 <th>Sex</th>
                                 <th>Age</th>
@@ -57,116 +59,9 @@ include_once 'functions/authentication.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>33</td>
-                                <td>2008/11/28</td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Angelica Ramos</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>47</td>
-                                <td>2009/10/09<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Ashton Cox</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>66</td>
-                                <td>2009/01/12<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Bradley Greer</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>41</td>
-                                <td>2012/10/13<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Brenden Wagner</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>28</td>
-                                <td>2011/06/07<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Brielle Williamson</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>61</td>
-                                <td>2012/12/02<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>38</td>
-                                <td>2011/05/03<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar3.jpeg">Caesar Vance</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>21</td>
-                                <td>2011/12/12<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar4.jpeg">Cara Stevens</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>46</td>
-                                <td>2011/12/06<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar5.jpeg">Cedric Kelly</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{House}</td>
-                                <td>{Sex}</td>
-                                <td>22</td>
-                                <td>2012/03/29<br></td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
+                            <?php
+                            resident_list();
+                            ?>
                         </tbody>
                         <tfoot>
                             <tr></tr>
@@ -191,20 +86,20 @@ include_once 'functions/authentication.php';
                     <section>
                         <h1 class="text-center text-capitalize">Registration form</h1>
                         <div class="container">
-                            <form id="application-form">
+                            <form action="functions/resident-create.php" method="post" enctype="multipart/form-data">
                                 <div class="form-group mb-3">
                                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4">
                                         <div class="col">
-                                            <p><strong>First Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                                            <p><strong>First Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John" pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Last Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="lastname" placeholder="Ex. Smith">
+                                            <p><strong>Last Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="lastname" placeholder="Ex. Smith" pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S.">
+                                            <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S." pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Prefix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="prefix" placeholder="Ex. Sr. Jr">
+                                            <p><strong>Suffix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +109,7 @@ include_once 'functions/authentication.php';
                                             <p><strong>Date Of Birth</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="date" required="" name="birthdate">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="number" name="phone" placeholder="7777777777" max="11" min="11" required="">
+                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11" required="">
                                         </div>
                                         <div class="col">
                                             <p><strong>Sex</strong><span class="text-danger">*</span></p><select class="form-select" name="sex">
@@ -227,39 +122,39 @@ include_once 'functions/authentication.php';
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor">
+                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
                                 </div>
                                 <div class="form-group mb-3"><p><strong>Your Picture </strong><span class="text-danger">*</span></p>
-<div class="file">
-            <!-- Upload image input-->
-            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
-                <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
-                <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
-                <div class="input-group-append">
-                    <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
-                </div>
-            </div>
+                                    <div class="file">
+                                                <!-- Upload image input-->
+                                                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
+                                                    <input id="upload" name="picture" type="file" onchange="readURL(this);" class="form-control border-0">
+                                                    <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
+                                                    <div class="input-group-append">
+                                                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                                                    </div>
+                                                </div>
 
-            <!-- Uploaded image area-->
-            <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
-            <div class="image-area mt-4 text-dark"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
-<div class="col d-none">
-    <p><strong>URL</strong><span class="text-danger">*</span></p>
-    <input id="urllink" name="url" type="url" class="form-control" readonly/>
-</div>
-</div></div>
+                                                <!-- Uploaded image area-->
+                                                <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
+                                                <div class="image-area mt-4 text-dark"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
+                                    <div class="col d-none">
+                                        <p><strong>URL</strong><span class="text-danger">*</span></p>
+                                        <input id="urllink" name="url" type="url" class="form-control" readonly/>
+                                    </div>
+                                    </div></div>
                                 <div class="justify-content-center d-flex form-group mb-3">
                                     <div id="submit-btn"></div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <h3 id="fail" class="text-center text-danger d-none"><br>Form not Submitted&nbsp;<a href="contact.php">Try Again</a><br><br></h3>
-                            <h3 id="success-1" class="text-center text-success d-none"><br>Form Submitted Successfully&nbsp;<a href="contact.php">Send Another Response</a><br><br></h3>
-                        </div>
-                    </section>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+                            </div>
+                            <div class="col">
+                                <h3 id="fail" class="text-center text-danger d-none"><br>Form not Submitted&nbsp;<a href="contact.php">Try Again</a><br><br></h3>
+                                <h3 id="success-1" class="text-center text-success d-none"><br>Form Submitted Successfully&nbsp;<a href="contact.php">Send Another Response</a><br><br></h3>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                </form>
             </div>
         </div>
     </div>
@@ -267,7 +162,7 @@ include_once 'functions/authentication.php';
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Resident Info.</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                    <h4 class="modal-title">Resident Info</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form class="text-center" method="post">
@@ -278,20 +173,21 @@ include_once 'functions/authentication.php';
                     <section>
                         <h1 class="text-center text-capitalize">Update Resident</h1>
                         <div class="container">
-                            <form id="application-form-1">
+                            <form action="functions/resident-update.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="data_id">
                                 <div class="form-group mb-3">
                                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4">
                                         <div class="col">
-                                            <p><strong>First Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                                            <p><strong>First Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John" pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Last Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="lastname" placeholder="Ex. Smith">
+                                            <p><strong>Last Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="lastname" placeholder="Ex. Smith" pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S.">
+                                            <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S." pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Prefix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="prefix" placeholder="Ex. Sr. Jr">
+                                            <p><strong>Suffix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +197,7 @@ include_once 'functions/authentication.php';
                                             <p><strong>Date Of Birth</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="date" required="" name="birthdate">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="number" name="phone" placeholder="7777777777" max="11" min="11" required="">
+                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11" required="">
                                         </div>
                                         <div class="col">
                                             <p><strong>Sex</strong><span class="text-danger">*</span></p><select class="form-select" name="sex">
@@ -314,39 +210,39 @@ include_once 'functions/authentication.php';
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor">
+                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
                                 </div>
                                 <div class="form-group mb-3"><p><strong>Your Picture </strong><span class="text-danger">*</span></p>
-<div class="file">
-            <!-- Upload image input-->
-            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
-                <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
-                <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
-                <div class="input-group-append">
-                    <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
-                </div>
-            </div>
+                                    <div class="file">
+                                                <!-- Upload image input-->
+                                                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
+                                                    <input id="upload2" name="picture" type="file" onchange="readURL2(this);" class="form-control border-0">
+                                                    <label id="upload-label2" for="upload2" class="font-weight-light text-muted">Choose file</label>
+                                                    <div class="input-group-append">
+                                                        <label for="upload2" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                                                    </div>
+                                                </div>
 
-            <!-- Uploaded image area-->
-            <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
-            <div class="image-area mt-4 text-dark"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
-<div class="col d-none">
-    <p><strong>URL</strong><span class="text-danger">*</span></p>
-    <input id="urllink" name="url" type="url" class="form-control" readonly/>
-</div>
-</div></div>
+                                                <!-- Uploaded image area-->
+                                                <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
+                                                <div class="image-area mt-4 text-dark"><img id="imageResult2" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
+                                    <div class="col d-none">
+                                        <p><strong>URL</strong><span class="text-danger">*</span></p>
+                                        <input id="urllink2" name="url" type="url" class="form-control" readonly/>
+                                    </div>
+                                    </div></div>
                                 <div class="justify-content-center d-flex form-group mb-3">
-                                    <div id="submit-btn-1"></div>
+                                    <div id="submit-btn"></div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <h3 id="fail-1" class="text-center text-danger d-none"><br>Form not Submitted&nbsp;<a href="contact.php">Try Again</a><br><br></h3>
-                            <h3 id="success-2" class="text-center text-success d-none"><br>Form Submitted Successfully&nbsp;<a href="contact.php">Send Another Response</a><br><br></h3>
-                        </div>
-                    </section>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+                            </div>
+                            <div class="col">
+                                <h3 id="fail" class="text-center text-danger d-none"><br>Form not Submitted&nbsp;<a href="contact.php">Try Again</a><br><br></h3>
+                                <h3 id="success-1" class="text-center text-success d-none"><br>Form Submitted Successfully&nbsp;<a href="contact.php">Send Another Response</a><br><br></h3>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                </form>
             </div>
         </div>
     </div>
@@ -359,7 +255,10 @@ include_once 'functions/authentication.php';
                 <div class="modal-body">
                     <p>Are you sure you want to remove this resident?</p>
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-danger" type="button">Save</button></div>
+                <form action="functions/resident-remove.php" method="post">
+                    <input type="hidden" name="data_id">
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-danger" type="submit">remove</button></div>
+                </form>
             </div>
         </div>
     </div>
@@ -371,7 +270,6 @@ include_once 'functions/authentication.php';
     <script src="assets/js/vfs_fonts.js"></script>
     <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/Application-Form-Bootstrap-Image-Uploader.js"></script>
-    <script src="assets/js/Application-Form-submit-form.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/buttons.print.min.js"></script>
     <script src="assets/js/buttons.html5.min.js"></script>
