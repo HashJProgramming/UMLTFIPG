@@ -1,5 +1,7 @@
 <?php
 include_once 'functions/authentication.php';
+include_once 'functions/get-data.php';
+include_once 'functions/get-tables.php';
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -27,7 +29,7 @@ include_once 'functions/authentication.php';
                     <li class="nav-item"><a class="nav-link active" href="population.php">Population</a></li>
                     <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
-                </ul><button class="btn btn-outline-success" type="button">Logout</button>
+                </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
             </div>
         </div>
     </nav>
@@ -49,7 +51,9 @@ include_once 'functions/authentication.php';
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgb(78,223,153)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                    <div class="chart-area">
+                        <?php male_month_chart(); ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,37 +69,34 @@ include_once 'functions/authentication.php';
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgb(78,223,153)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                    <div class="chart-area">
+                        <?php female_month_chart(); ?>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <p class="text-success m-0 fw-bold"><span class="badge bg-success">42</span>&nbsp;Male</p>
+                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"><?php echo get_male(); ?></span>&nbsp;Male</p>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                         <table class="table my-0 table-display">
                             <thead>
                                 <tr>
-                                    <th>Firstname</th>
                                     <th>Lastname</th>
+                                    <th>Firstname</th>
                                     <th>Middlename</th>
                                     <th>Suffix</th>
-                                    <th>Gender</th>
+                                    <th>Sex</th>
                                     <th>Age</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                    <td>{Purok}</td>
-                                    <td>{Purok}</td>
-                                    <td>{Purok}</td>
-                                    <td>{Gender}</td>
-                                    <td>33</td>
-                                </tr>
+
+                                <?php male_list(); ?>
+
                             </tbody>
                             <tfoot>
                                 <tr></tr>
@@ -108,30 +109,25 @@ include_once 'functions/authentication.php';
         <div class="col-xl-6">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <p class="text-success m-0 fw-bold"><span class="badge bg-success">42</span>&nbsp;Female</p>
+                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"><? echo get_female(); ?></span>&nbsp;Female</p>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                         <table class="table my-0 table-display">
                             <thead>
                                 <tr>
-                                    <th>Firstname</th>
                                     <th>Lastname</th>
+                                    <th>Firstname</th>
                                     <th>Middlename</th>
                                     <th>Suffix</th>
-                                    <th>Gender</th>
+                                    <th>Sex</th>
                                     <th>Age</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                    <td>{Purok}</td>
-                                    <td>{Purok}</td>
-                                    <td>{Purok}</td>
-                                    <td>{Gender}</td>
-                                    <td>33</td>
-                                </tr>
+                                
+                                <?php female_list(); ?>
+
                             </tbody>
                             <tfoot>
                                 <tr></tr>

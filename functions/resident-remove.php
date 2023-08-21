@@ -17,6 +17,6 @@ try {
     generate_logs('Removing Resident',  $fullname.' was removed');
     header('Location: ../residents.php?type=success&message='.$fullname.' was removed successfully!');
 } catch (\Throwable $th) {
-    generate_logs('Removing StaResidentff', $th);
+    generate_logs('Removing Resident', $th);
     header('Location: ../residents.php?type=error&message=Something went wrong, please try again');
 }

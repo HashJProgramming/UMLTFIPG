@@ -34,6 +34,55 @@ function resident_list(){
 }
 
 
+function male_list(){
+    global $db;
+    $sql = 'SELECT * FROM residents WHERE sex = "Male" ORDER BY lastname ASC';
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+    foreach ($results as $row) {
+        $birthdate = new DateTime($row['birthdate']);
+        $today = new DateTime();
+        $age = $birthdate->diff($today)->y;
+        ?>
+            <tr>
+                <td><img class="text-center rounded-circle me-2" width="50" height="50" src="functions/<?php echo $row['picture']; ?>"><?php echo $row['lastname']; ?></td>
+                <td><?php echo $row['firstname']; ?></td>
+                <td><?php echo $row['middlename']; ?></td>
+                <td><?php echo $row['suffix']; ?></td>
+                <td><?php echo $row['sex']; ?></td>
+                <td><?php echo $age; ?></td>
+            </tr>
+        <?php
+    }
+}
+
+function female_list(){
+    global $db;
+    $sql = 'SELECT * FROM residents WHERE sex = "Female" ORDER BY lastname ASC';
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+    foreach ($results as $row) {
+        $birthdate = new DateTime($row['birthdate']);
+        $today = new DateTime();
+        $age = $birthdate->diff($today)->y;
+        ?>
+            <tr>
+                <td><img class="text-center rounded-circle me-2" width="50" height="50" src="functions/<?php echo $row['picture']; ?>"><?php echo $row['lastname']; ?></td>
+                <td><?php echo $row['firstname']; ?></td>
+                <td><?php echo $row['middlename']; ?></td>
+                <td><?php echo $row['suffix']; ?></td>
+                <td><?php echo $row['sex']; ?></td>
+                <td><?php echo $age; ?></td>
+            </tr>
+        <?php
+    }
+}
+
+
 function projects_list(){
     global $db;
     $sql = 'SELECT * FROM projects ORDER BY name ASC';

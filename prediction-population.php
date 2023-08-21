@@ -26,7 +26,7 @@ include_once 'functions/authentication.php';
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
                     <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
-                </ul><button class="btn btn-outline-success" type="button">Logout</button>
+                </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
             </div>
         </div>
     </nav>
