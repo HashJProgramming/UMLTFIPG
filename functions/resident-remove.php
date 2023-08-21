@@ -14,9 +14,9 @@ try {
     $statement = $db->prepare($sql);
     $statement->bindParam(':id', $id);
     $statement->execute();
-    generate_logs('Removing Customer',  $fullname.' was removed');
+    generate_logs('Removing Resident',  $fullname.' was removed');
     header('Location: ../residents.php?type=success&message='.$fullname.' was removed successfully!');
 } catch (\Throwable $th) {
-    generate_logs('Removing Staff', $th);
+    generate_logs('Removing StaResidentff', $th);
     header('Location: ../residents.php?type=error&message=Something went wrong, please try again');
 }

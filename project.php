@@ -1,5 +1,6 @@
 <?php
 include_once 'functions/authentication.php';
+include_once 'functions/get-tables.php';
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -32,7 +33,7 @@ include_once 'functions/authentication.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Projects - Under Maintenance</h3><button class="btn btn-success btn-sm link-light d-none d-sm-inline-block" type="button" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Budget</button>
+            <h3 class="text-success mb-0">Projects - Under Maintenance</h3><button class="btn btn-success btn-sm link-light d-none d-sm-inline-block" type="button" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Project</button>
         </div>
         <div class="card shadow">
             <div class="card-header py-3">
@@ -45,21 +46,12 @@ include_once 'functions/authentication.php';
                             <tr>
                                 <th>Project Name</th>
                                 <th>Description</th>
-                                <th>Fund</th>
-                                <th>Total</th>
                                 <th>Date</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/avatars/avatar1.jpeg">{Project}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="budget.php">Budget</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
-                            </tr>
+                            <?php projects_list(); ?>
                         </tbody>
                         <tfoot>
                             <tr></tr>
@@ -76,10 +68,10 @@ include_once 'functions/authentication.php';
                     <h4 class="modal-title">Add Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="functions/project-create.php" method="post">
                         <div class="form-group mb-3">
                             <div>
-                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="name" placeholder="Ex. Skyway">
                             </div>
                             <div>
                                 <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
@@ -88,9 +80,10 @@ include_once 'functions/authentication.php';
                                 <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea></p>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                </form>
             </div>
         </div>
     </div>
@@ -101,10 +94,11 @@ include_once 'functions/authentication.php';
                     <h4 class="modal-title">Update Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="functions/project-update.php" method="post">
+                        <input type="hidden" name="data_id">
                         <div class="form-group mb-3">
                             <div>
-                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="name" placeholder="Ex. Skyway">
                             </div>
                             <div>
                                 <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
@@ -113,9 +107,10 @@ include_once 'functions/authentication.php';
                                 <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea></p>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                </form>
             </div>
         </div>
     </div>
@@ -128,7 +123,10 @@ include_once 'functions/authentication.php';
                 <div class="modal-body">
                     <p>Are you sure you want to remove this project?</p>
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-danger" type="button">Remove</button></div>
+                <form action="functions/project-remove.php" method="post">
+                    <input type="hidden" name="data_id">
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-danger" type="submit">Remove</button></div>
+                </form>
             </div>
         </div>
     </div>

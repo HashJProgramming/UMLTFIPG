@@ -98,7 +98,22 @@ new DataTable('table.table-display',{
             $('input[name="data_id"]').val(id); 
             console.log(id);
         });
-      } else{
+      } else if (currentPath.includes("UMLTFIPG/project.php")) {
+        $('button[data-bs-target="#update"]').on('click', function() {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var description = $(this).data('description');
+            
+            $('input[name="data_id"]').val(id);
+            $('input[name="name"]').val(name);
+            $('textarea[name="description"]').val(description);
+        });
+        $('button[data-bs-target="#remove"]').on('click', function() {
+            var id = $(this).data('id');
+            $('input[name="data_id"]').val(id); 
+            console.log(id);
+        });
+      } else {
         console.log("The URL is neither /customer nor /list");
       }
 

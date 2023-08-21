@@ -1,5 +1,7 @@
 <?php
 include_once 'functions/authentication.php';
+include_once 'functions/get-tables.php';
+$id = $_GET['id'];
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -7,7 +9,7 @@ include_once 'functions/authentication.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Project - UMLTFIPGB</title>
+    <title>Project Funds - UMLTFIPGB</title>
     <meta name="description" content="UMLTFIPGB - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -24,7 +26,7 @@ include_once 'functions/authentication.php';
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="prediction.php">Prediction</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item"><a class="nav-link" href="project.php">Budget</a></li>
+                    <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
                 </ul><button class="btn btn-outline-success" type="button">Logout</button>
             </div>
@@ -32,11 +34,11 @@ include_once 'functions/authentication.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">{Project Name} - Under Maintenance</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Fund</a>
+            <h3 class="text-success mb-0">Project Budget</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Fund</a>
         </div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-success m-0 fw-bold">Budget List</p>
+                <p class="text-success m-0 fw-bold">Fund List</p>
             </div>
             <div class="card-body">
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
@@ -49,36 +51,7 @@ include_once 'functions/authentication.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
-                            <tr>
-                                <td>{Purok}</td>
-                                <td>{Purok}</td>
-                                <td>2008/11/28</td>
-                            </tr>
+                            <?php project_fund_list($id); ?>
                         </tbody>
                         <tfoot>
                             <tr></tr>
@@ -95,13 +68,15 @@ include_once 'functions/authentication.php';
                     <h4 class="modal-title">Add Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="functions/project-add-fund.php" method="post">
+                    <input type="hidden" name="data_id" value="<?php echo $id; ?>">
                         <div class="form-group mb-3">
                             <div>
                                 <p><strong>Project Fund</strong><span class="text-danger">*</span></p><input class="form-control" type="number" required="" name="fund">
                             </div>
                             <div>
-                                <p><strong>Status</strong>&nbsp;<span class="text-danger">*</span></p><select class="form-select">
+                                <p><strong>Status</strong>&nbsp;<span class="text-danger">*</span></p>
+                                <select class="form-select" name="status">
                                     <optgroup label="SELECT STATUS">
                                         <option value="APPROVED" selected="">APPROVED</option>
                                         <option value="DISAPPROVED">DISAPPROVED</option>
@@ -110,9 +85,10 @@ include_once 'functions/authentication.php';
                                 </select>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                </form>
             </div>
         </div>
     </div>

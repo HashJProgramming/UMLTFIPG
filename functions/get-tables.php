@@ -32,3 +32,45 @@ function resident_list(){
         <?php
     }
 }
+
+
+function projects_list(){
+    global $db;
+    $sql = 'SELECT * FROM projects ORDER BY name ASC';
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+    foreach ($results as $row) {
+        ?>
+             <tr>
+                <td><?php echo $row['name']; ?></td>
+                <td><?php echo $row['description']; ?></td>
+                <td><?php echo $row['created_at']; ?></td>
+                <td class="text-center">
+                    <a class="btn btn-info link-light mx-1 mb-1" role="button" href="budget.php?id=<?php echo $row['id']; ?>">Funds</a>
+                    <button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['name']; ?>" data-description="<?php echo $row['description']; ?>">Update</button>
+                    <button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal" data-id="<?php echo $row['id']; ?>">Remove</button></td>
+            </tr>
+        <?php
+    }
+}
+
+function project_fund_list($id){
+    global $db;
+    $sql = 'SELECT * FROM project_fund WHERE project_id = :id';
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+    foreach ($results as $row) {
+        ?>
+             <tr>
+                <td><?php echo '₱'.number_format($row['fund'], 2); ?></td>
+                <td><?php echo $row['status']; ?></td>
+                <td><?php echo $row['created_at']; ?></td>
+            </tr>
+        <?php
+    }
+}
