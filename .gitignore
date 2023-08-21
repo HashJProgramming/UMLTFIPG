@@ -1,3 +1,5 @@
 .venv
 server/test.py
-data/
+server/data/
+server/project_list.json
+server/purok_list.json

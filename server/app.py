@@ -42,7 +42,7 @@ def project_list_gen(df):
     df.rename(columns={'Project Name':'Project'},inplace=True)
     df['Project'] = df['Project'].apply(lambda row: row.lower())
     lists = df['Project'].unique().tolist()
-    with open('purok_list.json','w', encoding='utf-8') as f:
+    with open(f'{my_path}/project_list.json','w', encoding='utf-8') as f:
         json.dump(lists, f, ensure_ascii=False,indent=4)
     return lists, df
 
@@ -77,7 +77,7 @@ def purok_list_gen(df):
     df.rename(columns={'Purok Name':'Purok'},inplace=True)
     df['Purok'] = df['Purok'].apply(lambda row: row.lower())
     lists = df['Purok'].unique().tolist()
-    with open('purok_list.json','w', encoding='utf-8') as f:
+    with open(f'{my_path}/purok_list.json','w', encoding='utf-8') as f:
         json.dump(lists, f, ensure_ascii=False,indent=4)
     return lists, df
 
