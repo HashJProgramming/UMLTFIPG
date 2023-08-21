@@ -1,3 +1,6 @@
+<?php
+include_once 'functions/authentication.php';
+?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
 
@@ -63,7 +66,20 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span class="text-success">CURRENT TOTAL BUDGET</span></div>
+                                <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span class="text-success">TOTAL MALE</span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>18</span></div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-start-warning py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span class="text-success">TOTAL FEMALE</span></div>
                                 <div class="text-dark fw-bold h5 mb-0"><span>18</span></div>
                             </div>
                             <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>

@@ -1,3 +1,6 @@
+<?php
+include_once 'functions/authentication.php';
+?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
 
@@ -27,74 +30,6 @@
             </div>
         </div>
     </nav>
-    <div class="modal fade" role="dialog" tabindex="-1" id="add">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group mb-3">
-                            <div>
-                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
-                            </div>
-                            <div>
-                                <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
-                            </div>
-                            <div>
-                                <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea><strong>Project Fund</strong><span class="text-danger">*</span></p><input class="form-control" type="number" required="" name="fund">
-                            </div>
-                            <div>
-                                <p><strong>Status</strong>&nbsp;<span class="text-danger">*</span></p><select class="form-select">
-                                    <optgroup label="SELECT STATUS">
-                                        <option value="APPROVED" selected="">APPROVED</option>
-                                        <option value="DISAPPROVED">DISAPPROVED</option>
-                                        <option value="POSTPONE">POSTPONE</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="update">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Update Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group mb-3">
-                            <div>
-                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
-                            </div>
-                            <div>
-                                <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
-                            </div>
-                            <div>
-                                <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea><strong>Project Fund</strong><span class="text-danger">*</span></p><input class="form-control" type="number" required="" name="fund">
-                            </div>
-                            <div>
-                                <p><strong>Status</strong>&nbsp;<span class="text-danger">*</span></p><select class="form-select">
-                                    <optgroup label="SELECT STATUS">
-                                        <option value="APPROVED" selected="">APPROVED</option>
-                                        <option value="DISAPPROVED">DISAPPROVED</option>
-                                        <option value="POSTPONE">POSTPONE</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Projects - Under Maintenance</h3><button class="btn btn-success btn-sm link-light d-none d-sm-inline-block" type="button" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Budget</button>
@@ -131,6 +66,56 @@
                         </tfoot>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="add">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group mb-3">
+                            <div>
+                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                            </div>
+                            <div>
+                                <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
+                            </div>
+                            <div>
+                                <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="update">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Project</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group mb-3">
+                            <div>
+                                <p><strong>Project Name</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="firstname" placeholder="Ex. John">
+                            </div>
+                            <div>
+                                <p><strong>Project Description</strong>&nbsp;&nbsp;<span class="text-danger">*</span></p>
+                            </div>
+                            <div>
+                                <p><textarea class="form-control" name="description" placeholder="Project Description" required=""></textarea></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
             </div>
         </div>
     </div>
