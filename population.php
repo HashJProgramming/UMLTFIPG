@@ -22,9 +22,10 @@ include_once 'functions/authentication.php';
             <div class="collapse navbar-collapse" id="navcol-3">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="prediction.php">Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link active" href="population.php">Population</a></li>
-                    <li class="nav-item"><a class="nav-link" href="project.php">Budget</a></li>
+                    <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
                 </ul><button class="btn btn-outline-success" type="button">Logout</button>
             </div>

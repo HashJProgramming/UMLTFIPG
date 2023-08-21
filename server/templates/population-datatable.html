@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UMLTFIPGB - Population Prediction</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="container">
+        {% if results %}
+            <h2 class="mt-4">Prediction Results</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Purok</th>
+                        <th>Population</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.Year }}</td>
+                        <td colspan="2">
+                            <table class="table table-bordered table-display">
+                                {% for purok_result in result.PurokResults %}
+                                <tr>
+                                    <td>{{ purok_result.Purok.upper() }}</td>
+                                    <td>{{ "{:,.2f}".format(purok_result.Population) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+</body>
+</html>

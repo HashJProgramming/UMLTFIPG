@@ -7,7 +7,7 @@ include_once 'functions/authentication.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Prediction - UMLTFIPGB</title>
+    <title>Prediction Budget - UMLTFIPGB</title>
     <meta name="description" content="UMLTFIPGB - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -21,9 +21,10 @@ include_once 'functions/authentication.php';
             <div class="collapse navbar-collapse" id="navcol-3">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="prediction.php">Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item"><a class="nav-link" href="project.php">Budget</a></li>
+                    <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
                     <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
                 </ul><button class="btn btn-outline-success" type="button">Logout</button>
             </div>
@@ -31,9 +32,9 @@ include_once 'functions/authentication.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Prediction - (Population but the budget is not yet working.🫠)</h3>
+            <h3 class="text-success mb-0">Prediction - Budget</h3>
         </div>
-    </div><iframe src="http://127.0.0.1:5000" frameborder="0" allowtransparency="true" width="100%" height="750px"></iframe>
+    </div><iframe src="http://127.0.0.1:5000/budget" frameborder="0" allowtransparency="true" width="100%" height="750px"></iframe>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

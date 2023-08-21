@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "print-color-adjust",
+          "text-align: -webkit-match-parent"
+        ]
+      }
+    ]
+  }
+}
