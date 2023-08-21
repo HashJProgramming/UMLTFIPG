@@ -8,7 +8,15 @@
       {
         "ignore": [
           "print-color-adjust",
-          "text-align: -webkit-match-parent"
+          "text-align: -webkit-match-parent",
+          "-webkit-text-size-adjust",
+          "-webkit-tap-highlight-color",
+          "text-decoration-skip-ink",
+          "inherit",
+          "-webkit-appearance",
+          "-webkit-overflow-scrolling",
+          "overflow-anchor",
+          "text-underline-offset"
         ]
       }
     ]

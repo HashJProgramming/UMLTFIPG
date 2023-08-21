@@ -414,8 +414,8 @@ caption {
   text-align: left;
 }
 th {
-  text-align: inherit;
   text-align: -webkit-match-parent;
+  text-align: inherit;
 }
 thead,
 tbody,
@@ -469,6 +469,7 @@ button,
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
+  appearance: button;
 }
 button:not(:disabled),
 [type="button"]:not(:disabled),
@@ -519,6 +520,7 @@ legend + * {
 }
 [type="search"] {
   -webkit-appearance: textfield;
+  appearance: textfield;
   outline-offset: -2px;
 }
 ::-webkit-search-decoration {
@@ -534,6 +536,7 @@ legend + * {
 ::file-selector-button {
   font: inherit;
   -webkit-appearance: button;
+  appearance: button;
 }
 output {
   display: inline-block;
