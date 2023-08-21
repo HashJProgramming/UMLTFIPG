@@ -18,11 +18,11 @@
         <div class="container-fluid"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-semi-white d-flex justify-content-center align-items-center me-4 bs-icon"><img src="assets/img/republic-of-the-philippines-clipart-6.jpg" width="64" height="64"></span><span class="text-light-emphasis">UMLTFIPGB</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-3"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-3">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="prediction.html">Prediction</a></li>
-                    <li class="nav-item"><a class="nav-link" href="population.html">Population</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="project.html">Project</a></li>
-                    <li class="nav-item"><a class="nav-link" href="residents.html">Residents</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction.php">Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="project.php">Project</a></li>
+                    <li class="nav-item"><a class="nav-link" href="residents.php">Residents</a></li>
                 </ul><button class="btn btn-outline-success" type="button">Logout</button>
             </div>
         </div>
@@ -123,7 +123,7 @@
                                 <td>{Purok}</td>
                                 <td>{Purok}</td>
                                 <td>2008/11/28</td>
-                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="budget.html">Budget</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
+                                <td class="text-center"><a class="btn btn-info link-light mx-1 mb-1" role="button" href="budget.php">Budget</a><button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal">Update</button><button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal">Remove</button></td>
                             </tr>
                         </tbody>
                         <tfoot>
