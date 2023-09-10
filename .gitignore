@@ -5,3 +5,4 @@ server/data/
 server/project_list.json
 server/purok_list.json
 ngrok.yml
+server/__pycache__/
