@@ -1,9 +1,39 @@
 ## UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth (Web Application)
-
-![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/1.png)
 ![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/2.png)
-![alt text](https://github.com/HashJProgramming/UMLTFIPG/blob/Main/screenshot/3.png)
 
+## Installation & Setup
+### XAMPP
+- Download XAMPP from [here](https://www.apachefriends.org/download.html)
+- Install XAMPP
+- Clone this repository to your `xampp/htdocs` folder
+- `git clone https://github.com/HashJProgramming/UMLTFIPG`
+- Open XAMPP Control Panel
+- Start Apache and MySQL
+- Open your browser and go to `localhost/UMLTFIPG`
+- Enjoy!
+
+Here you can change the `xampp/htdocs/index.php` to redirect to the `UMLTFIPG` folder.
+```php
+    <?php
+        if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
+            $uri = 'https://';
+        } else {
+            $uri = 'http://';
+        }
+        $uri .= $_SERVER['HTTP_HOST'];
+        header('Location: '.$uri.'/UMLTFIPG/');
+        exit;
+    ?>
+```
+###  Python
+- Download Python from [here](https://www.python.org/downloads/)
+- Install Python
+- cd to `xampp/htdocs/UMLTFIPG/server` folder
+- Install the required packages
+```bash
+cd server
+pip install -r requirements.txt
+```
 
 ## XAMPP Specifications
 
@@ -15,38 +45,27 @@
 | PHP             | 8.2.4                               |
 | phpMyAdmin      | 5.2.1 (up to date)                   |
 
-## Python Specifications 
+## LICENSE
+```               
+                                                MIT License
 
-| Tool            | Version                             |
-|-----------------|-------------------------------------|
-| Version | Python 3.11.3|
-| blinker        | 1.6.2  (up to date) |
-| click          | 8.1.6  (up to date) |
-| colorama       | 0.4.6  (up to date) |
-| contourpy      | 1.1.0  (up to date) |
-| cycler         | 0.11.0 (up to date) |
-| et-xmlfile     | 1.1.0  (up to date) |
-| Flask          | 2.3.2  (up to date) |
-| fonttools      | 4.42.0 (up to date) |
-| itsdangerous   | 2.1.2  (up to date) |
-| Jinja2         | 3.1.2  (up to date) |
-| joblib         | 1.3.2  (up to date) |
-| kiwisolver     | 1.4.4  (up to date) |
-| MarkupSafe     | 2.1.3  (up to date) |
-| matplotlib     | 3.7.2  (up to date) |
-| numpy          | 1.25.2 (up to date) |
-| openpyxl       | 3.1.2  (up to date) |
-| packaging      | 23.1   (up to date) |
-| pandas         | 2.0.3  (up to date) |
-| Pillow         | 10.0.0 (up to date) |
-| pip            | 22.3.1 (up to date) |
-| pyparsing      | 3.0.9  (up to date) |
-| python-dateutil| 2.8.2  (up to date) |
-| pytz           | 2023.3 (up to date) |
-| scikit-learn   | 1.3.0  (up to date) |
-| scipy          | 1.11.1 (up to date) |
-| setuptools     | 65.5.0 (up to date) |
-| six            | 1.16.0 (up to date) |
-| threadpoolctl  | 3.2.0  (up to date) |
-| tzdata         | 2023.3 (up to date) | 
-| Werkzeug       | 2.3.6  (up to date) |
+                                    Copyright (c) 2023 Joshua Ambalong
+
+                Permission is hereby granted, free of charge, to any person obtaining a copy
+                of this software and associated documentation files (the "Software"), to deal
+                in the Software without restriction, including without limitation the rights
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                copies of the Software, and to permit persons to whom the Software is
+                furnished to do so, subject to the following conditions:
+
+                The above copyright notice and this permission notice shall be included in all
+                copies or substantial portions of the Software.
+
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                SOFTWARE.
+```
