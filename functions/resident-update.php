@@ -32,7 +32,7 @@ address = :address,
 phone = :phone, 
 sex = :sex, 
 birthdate = :birthdate, 
-picture = :picture 
+picture = :picture, 
 purok = :purok 
 WHERE id = :id";
 
