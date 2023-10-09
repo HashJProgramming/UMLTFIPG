@@ -45,6 +45,11 @@ pip install -r requirements.txt
 | PHP             | 8.2.4                               |
 | phpMyAdmin      | 5.2.1 (up to date)                   |
 
+## Administrator Credentials
+| Username | Password |
+|----------|----------|
+| admin    | admin    |
+
 ## LICENSE
 ```               
                                                 MIT License
