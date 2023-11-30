@@ -1,5 +1,5 @@
 .venv
-functions/resident-pictures/
+functions/resident-pictures/*
 server/test.py
 ngrok.yml
 server/__pycache__/

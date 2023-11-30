@@ -14,7 +14,7 @@ function resident_list(){
         $age = $birthdate->diff($today)->y;
         ?>
             <tr>
-                <td><img class="text-center rounded-circle me-2" width="100" height="100" src="functions/<?php echo $row['picture']; ?>"></td>
+                <td><?php echo $row['id']; ?></td>
                 <td><?php echo $row['lastname']; ?></td>
                 <td><?php echo $row['firstname']; ?></td>
                 <td><?php echo $row['middlename']; ?></td>

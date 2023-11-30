@@ -47,14 +47,14 @@ include_once 'functions/get-tables.php';
                     <table class="table my-0 table-display" id="dataTable">
                         <thead>
                             <tr>
-                                <th>Picture</th>
+                                <th>ID</th>
                                 <th>Lastname</th>
                                 <th>Firstname</th>
                                 <th>Middlename</th>
                                 <th>Suffix</th>
                                 <th>Phone</th>
                                 <th>Purok</th>
-                                <th>Address</th>
+                                <th>Previous Address</th>
                                 <th>Sex</th>
                                 <th>Age</th>
                                 <th>Birthdate</th>
@@ -102,7 +102,7 @@ include_once 'functions/get-tables.php';
                                             <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S." pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Suffix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
+                                            <p><strong>Suffix</strong></p><input class="form-control" type="text" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@ include_once 'functions/get-tables.php';
                                             <p><strong>Date Of Birth</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="date" required="" name="birthdate">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11" required="">
+                                            <p><strong>Phone Number&nbsp;</strong></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11">
                                         </div>
                                         <div class="col">
                                             <p><strong>Sex</strong><span class="text-danger">*</span></p><select class="form-select" name="sex">
@@ -152,28 +152,10 @@ include_once 'functions/get-tables.php';
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
+                                    <p><strong>Previous Address&nbsp;</strong></p><input class="form-control" type="text" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
                                     
                                 </div>
-                                <div class="form-group mb-3"><p><strong>Your Picture </strong><span class="text-danger">*</span></p>
-                                    <div class="file">
-                                                <!-- Upload image input-->
-                                                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
-                                                    <input id="upload" name="picture" type="file" onchange="readURL(this);" class="form-control border-0">
-                                                    <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
-                                                    <div class="input-group-append">
-                                                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Uploaded image area-->
-                                                <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
-                                                <div class="image-area mt-4 text-dark"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
-                                    <div class="col d-none">
-                                        <p><strong>URL</strong><span class="text-danger">*</span></p>
-                                        <input id="urllink" name="url" type="url" class="form-control" readonly/>
-                                    </div>
-                                    </div></div>
+                                
                                 <div class="justify-content-center d-flex form-group mb-3">
                                     <div id="submit-btn"></div>
                                 </div>
@@ -218,7 +200,7 @@ include_once 'functions/get-tables.php';
                                             <p><strong>Middle Name</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="middlename" placeholder="Ex. S." pattern="^(?!\s).*$">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Suffix</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
+                                            <p><strong>Suffix</strong></p><input class="form-control" type="text" name="suffix" placeholder="Ex. Sr. Jr" pattern="^(?!\s).*$">
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +210,7 @@ include_once 'functions/get-tables.php';
                                             <p><strong>Date Of Birth</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="date" required="" name="birthdate">
                                         </div>
                                         <div class="col">
-                                            <p><strong>Phone Number&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11" required="">
+                                            <p><strong>Phone Number&nbsp;</strong></p><input class="form-control" type="text" name="phone" placeholder="7777777777" pattern="[0-9]+" minlength="11" maxlength="11">
                                         </div>
                                         <div class="col">
                                             <p><strong>Sex</strong><span class="text-danger">*</span></p><select class="form-select" name="sex">
@@ -268,27 +250,9 @@ include_once 'functions/get-tables.php';
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <p><strong>Address&nbsp;</strong><span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
+                                    <p><strong>Previous Address&nbsp;</strong></p><input class="form-control" type="text" name="address" placeholder="Ex. Room No-361, 33/1, 3rd Floor" pattern="^(?!\s).*$">
                                 </div>
-                                <div class="form-group mb-3"><p><strong>Your Picture </strong><span class="text-danger">*</span></p>
-                                    <div class="file">
-                                                <!-- Upload image input-->
-                                                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm ">
-                                                    <input id="upload2" name="picture" type="file" onchange="readURL2(this);" class="form-control border-0">
-                                                    <label id="upload-label2" for="upload2" class="font-weight-light text-muted">Choose file</label>
-                                                    <div class="input-group-append">
-                                                        <label for="upload2" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Uploaded image area-->
-                                                <p class="font-italic text-dark text-center">The image uploaded will be rendered inside the box below.</p>
-                                                <div class="image-area mt-4 text-dark"><img id="imageResult2" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"  width=200></div>
-                                    <div class="col d-none">
-                                        <p><strong>URL</strong><span class="text-danger">*</span></p>
-                                        <input id="urllink2" name="url" type="url" class="form-control" readonly/>
-                                    </div>
-                                    </div></div>
+                                
                                 <div class="justify-content-center d-flex form-group mb-3">
                                     <div id="submit-btn"></div>
                                 </div>

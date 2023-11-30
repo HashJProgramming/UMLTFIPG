@@ -30,7 +30,6 @@
               phone VARCHAR(255),
               sex VARCHAR(255),
               birthdate DATE,
-              picture VARCHAR(255),
               created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ");
