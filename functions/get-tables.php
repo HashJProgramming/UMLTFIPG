@@ -49,7 +49,7 @@ function male_list(){
         $age = $birthdate->diff($today)->y;
         ?>
             <tr>
-                <td><img class="text-center rounded-circle me-2" width="50" height="50" src="functions/<?php echo $row['picture']; ?>"><?php echo $row['lastname']; ?></td>
+                <td><?php echo $row['lastname']; ?></td>
                 <td><?php echo $row['firstname']; ?></td>
                 <td><?php echo $row['middlename']; ?></td>
                 <td><?php echo $row['suffix']; ?></td>
@@ -73,7 +73,7 @@ function female_list(){
         $age = $birthdate->diff($today)->y;
         ?>
             <tr>
-                <td><img class="text-center rounded-circle me-2" width="50" height="50" src="functions/<?php echo $row['picture']; ?>"><?php echo $row['lastname']; ?></td>
+                <td><?php echo $row['lastname']; ?></td>
                 <td><?php echo $row['firstname']; ?></td>
                 <td><?php echo $row['middlename']; ?></td>
                 <td><?php echo $row['suffix']; ?></td>
