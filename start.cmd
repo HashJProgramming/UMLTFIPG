@@ -1,5 +1,5 @@
 @echo off
-title "HASH'J Programming"
+title "UMLTFIPG System"
 
 set VENV_PATH=.venv\Scripts\activate.bat
 call %VENV_PATH%
@@ -10,28 +10,26 @@ if %errorlevel% == 1 (
     echo [=================================================================================================================]
     set PY_EXE=%~dp0..\python.exe
     call %PY_EXE%
-    python.exe -m pip install --upgrade pip
     python -m venv .venv
     call %VENV_PATH%
     pip install -r server/requirements.txt
     cls
     color b
-    echo [====================================================[HASH'J]=====================================================]
+    echo [====================================================[SERVER]=====================================================]
     echo [=                                               UMLTFIPG System                                                 =]
     echo [=================================================================================================================]
+    python -c "import sys; assert sys.version_info >= (3, 12, 0), 'Python version must be 3.12.0 or higher.'"
     python server/app.py
-    deactivate
     pause
 ) else (
     call %VENV_PATH%
-    python.exe -m pip install --upgrade pip
-    pip install -r server/requirements2.txt
+    pip install -r server/requirements.txt
     cls
     color b
-    echo [====================================================[HASH'J]=====================================================]
+    echo [====================================================[SERVER]=====================================================]
     echo [=                                               UMLTFIPG System                                                 =]
     echo [=================================================================================================================]
+    python -c "import sys; assert sys.version_info >= (3, 12, 0), 'Python version must be 3.12.0 or higher.'"
     python server/app.py
-    deactivate
     pause
 )

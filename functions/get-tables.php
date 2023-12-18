@@ -35,6 +35,29 @@ function resident_list(){
     }
 }
 
+function staff_list(){
+    global $db;
+    $sql = 'SELECT * FROM users WHERE type != "Admin" ORDER BY username ASC';
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+    foreach ($results as $row) {
+        ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['username']; ?></td>
+                <td><?php echo $row['password']; ?></td>
+                <td><?php echo $row['type']; ?></td>
+                <td class="text-center">
+                    <!-- <a class="btn btn-info link-light mx-1 mb-1" role="button" href="#">View</a> -->
+                    <button class="btn btn-warning link-light mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal" data-id="<?php echo $row['id']; ?>" data-username="<?php echo $row['username']; ?>">Update</button>
+                    <button class="btn btn-danger link-light mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal" data-id="<?php echo $row['id']; ?>">Remove</button>
+                </td>
+            </tr>
+        <?php
+    }
+}
 
 function male_list(){
     global $db;

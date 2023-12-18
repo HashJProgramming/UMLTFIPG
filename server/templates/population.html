@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UMLTFIPGB - Population Prediction</title>
+    <title>UMLTFIPG - Population Prediction</title>
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">UMLTFIPGB - Population Prediction</h1>
+        <h1 class="mt-5">UMLTFIPG - Population Prediction</h1>
         <form class="mt-3" method="POST" action="/population-predict">
             <div class="mb-3">
                 <label for="start_year" class="form-label">Start Year:</label>
@@ -53,7 +53,7 @@
                                 {% for purok_result in result.PurokResults %}
                                 <tr>
                                     <td>{{ purok_result.Purok.upper() }}</td>
-                                    <td>{{ "{:,.2f}".format(purok_result.Population) }}</td>
+                                    <td>{{ "{:,.0f}".format(purok_result.Population) }}</td>
                                 </tr>
                                 {% endfor %}
                             </table>

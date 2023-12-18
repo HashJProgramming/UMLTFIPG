@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UMLTFIPGB - Population Prediction</title>
+    <title>UMLTFIPG - Population Prediction</title>
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
@@ -25,7 +25,7 @@
                                 {% for purok_result in result.PurokResults %}
                                 <tr>
                                     <td>{{ purok_result.Purok.upper() }}</td>
-                                    <td>{{ "{:,.2f}".format(purok_result.Population) }}</td>
+                                    <td>{{ "{:,.0f}".format(purok_result.Population) }}</td>
                                 </tr>
                                 {% endfor %}
                             </table>

@@ -6,6 +6,7 @@ import io
 import os
 import json
 from flask import Flask, request, jsonify, render_template, Response, send_file
+import socket
 import matplotlib.pyplot as plt
 
 my_path = os.path.abspath(os.path.dirname(__file__))
@@ -233,4 +234,8 @@ def population_print():
     return render_template('population-print.html', results=get_population_prediction(current_year, current_year + 10))
 
 if __name__ =='__main__':  
-  app.run(debug=True, host='0.0.0.0')
+    computer_name = socket.gethostname()
+    print(f"\nSERVER URL: http://{computer_name}.local/UMLTFIPG")
+    print(f"LOCALHOST URL: http://localhost/UMLTFIPG")
+    print(f"SERVER PATH: \"{my_path}\"\n")
+    app.run(debug=True, host='0.0.0.0')
