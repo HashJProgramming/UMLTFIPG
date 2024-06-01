@@ -57,10 +57,11 @@ include_once 'functions/get-tables.php';
                                 <th>Suffix</th>
                                 <th>Phone</th>
                                 <th>Purok</th>
-                                <th>Phone</th>
+                                <th>Address</th>
                                 <th>Sex</th>
                                 <th>Age</th>
                                 <th>Birthdate</th>
+                                <th>Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -73,10 +74,11 @@ include_once 'functions/get-tables.php';
                                 <th>Suffix</th>
                                 <th>Phone</th>
                                 <th>Purok</th>
-                                <th>Phone</th>
+                                <th>Address</th>
                                 <th>Sex</th>
                                 <th>Age</th>
                                 <th>Birthdate</th>
+                                <th>Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </tfoot>
@@ -256,6 +258,14 @@ include_once 'functions/get-tables.php';
                                                 <option value="Lecuna">Lecuna</option>
                                                 <option value="Macrina">Macrina</option>
                                                 <option value="Durias">Durias</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <p><strong>STATUS</strong><span class="text-danger">*</span></p><select class="form-select" name="resident_status">
+                                                <optgroup label="SELECT STATUS">
+                                                <option value="1">Alive</option>
+                                                <option value="0">Deceased</option> 
                                                 </optgroup>
                                             </select>
                                         </div>

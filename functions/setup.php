@@ -30,6 +30,7 @@
               phone VARCHAR(255),
               sex VARCHAR(255),
               birthdate DATE,
+              status BOOLEAN DEFAULT 1,
               created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ");
@@ -103,6 +104,7 @@
               `phone`, 
               `sex`, 
               `birthdate`,
+                CASE WHEN `status` = 1 THEN 'Alive' ELSE 'Deceased' END AS status,
               TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age,
               `created_at`
             FROM `residents`;

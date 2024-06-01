@@ -10,19 +10,21 @@ $phone = $_POST['phone'];
 $sex = $_POST['sex'];
 $birthdate = $_POST['birthdate'];
 $purok = $_POST['purok'];
+$resident_status = $_POST['resident_status'];
 $fullname = $firstname.' '.$lastname.' '.$middlename.' '.$suffix;
 
     
 $sql = "UPDATE residents 
-SET firstname = :firstname, 
-lastname = :lastname, 
-middlename = :middlename, 
-suffix = :suffix, 
-address = :address, 
-phone = :phone, 
-sex = :sex, 
-birthdate = :birthdate, 
-purok = :purok 
+SET `firstname` = :firstname, 
+`lastname` = :lastname, 
+`middlename` = :middlename, 
+`suffix` = :suffix, 
+`address` = :address, 
+`phone` = :phone, 
+`sex` = :sex, 
+`birthdate` = :birthdate, 
+`purok` = :purok,
+`status` = :resident_status
 WHERE id = :id";
 
 $stmt = $db->prepare($sql);
@@ -35,6 +37,7 @@ $stmt->bindParam(':phone', $phone);
 $stmt->bindParam(':sex', $sex);
 $stmt->bindParam(':birthdate', $birthdate);
 $stmt->bindParam(':purok', $purok);
+$stmt->bindParam(':resident_status', $resident_status);
 $stmt->bindParam(':id', $id);
 $stmt->execute();
 generate_logs('Updating Resident', $fullname.'| Resident information was updated');

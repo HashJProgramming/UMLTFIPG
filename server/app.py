@@ -33,6 +33,7 @@ def get_predicted_population(year_to_predict):
         SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
         SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
     FROM residents 
+    WHERE status = '1'
     GROUP BY purok, YEAR(created_at)
     """
     db, cursor = database_connect()
@@ -120,6 +121,7 @@ def get_predicted_population_table(year_to_predict):
         SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
         SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
     FROM residents 
+    WHERE status = '1'
     GROUP BY purok, YEAR(created_at)
     """
     db, cursor = database_connect()
@@ -204,7 +206,7 @@ def get_predicted_population_table(year_to_predict):
 
 @app.route('/predicted_population_entire_purok/<int:year_to_predict>/', methods=['GET'])
 def get_predicted_population_entire_purok(year_to_predict):
-    query = "SELECT YEAR(created_at) AS year, COUNT(*) AS count FROM residents GROUP BY YEAR(created_at)"
+    query = "SELECT YEAR(created_at) AS year, COUNT(*) AS count FROM residents WHERE status = '1' GROUP BY YEAR(created_at)"
     db, cursor = database_connect()
     cursor.execute(query)
     data = cursor.fetchall()
@@ -227,7 +229,7 @@ def get_predicted_population_entire_purok(year_to_predict):
 
 @app.route('/predicted_purok/<int:year_to_predict>/<purok_name>', methods=['GET'])
 def get_predicted_purok_population(year_to_predict, purok_name):
-    query = f"SELECT purok, YEAR(created_at) AS year, COUNT(*) AS count FROM residents WHERE purok = '{purok_name}' GROUP BY purok, YEAR(created_at)"
+    query = f"SELECT purok, YEAR(created_at) AS year, COUNT(*) AS count FROM residents WHERE purok = '{purok_name}' AND status = '1' GROUP BY purok, YEAR(created_at)"
     db, cursor = database_connect()
     cursor.execute(query)
     data = cursor.fetchall()
@@ -269,7 +271,7 @@ def get_predicted_purok_population_sex():
         query = """
         SELECT purok, YEAR(created_at) AS year, sex, COUNT(*) AS count 
         FROM residents 
-        WHERE purok = %s AND created_at BETWEEN %s AND %s
+        WHERE purok = %s AND status = '1' AND created_at BETWEEN %s AND %s
         GROUP BY purok, YEAR(created_at), sex
         """
         
