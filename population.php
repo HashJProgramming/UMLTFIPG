@@ -37,7 +37,7 @@ include_once 'functions/get-tables.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Population - Under Maintenance</h3>
+            <h3 class="text-success mb-0">Population - Monitoring</h3>
         </div>
         <div class="row row-cols-2">
             <div class="col">

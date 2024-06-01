@@ -65,7 +65,7 @@ include_once 'functions/authentication.php';
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Prediction - Population</h3>
-            <a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#view-table" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;View Table</a>
+            <a class="btn btn-success btn-sm link-light " role="button" href="#" data-bs-target="#view-table" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;View Table</a>
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
 <?php
@@ -389,6 +389,45 @@ echo "</ul>";
                                 })
                             }
                         },
+                        columnDefs: [
+                            {
+                                targets: 1,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            {
+                                targets: 2,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            {
+                                targets: 3,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            {
+                                targets: 4,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            {
+                                targets: 5,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            {
+                                targets: 6,
+                                render: function (data, type, row) {
+                                    return parseFloat(data).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            },
+                            
+                        ],
                         initComplete: function () {
                             $('#dataTable').show();
                         },

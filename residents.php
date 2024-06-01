@@ -37,7 +37,7 @@ include_once 'functions/get-tables.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Residents</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Resident</a>
+            <h3 class="text-success mb-0">Residents</h3><a class="btn btn-success btn-sm link-light " role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Resident</a>
         </div>
     </div>
     <div class="container-fluid">

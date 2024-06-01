@@ -215,8 +215,8 @@ def get_predicted_population_entire_purok(year_to_predict):
     predicted_population = regression.predict([[year_to_predict]])
     growth_rate = regression.coef_[0]
     population_count = int(df['count'].sum())
-    print(f"Predicted population for the entire purok in year {year_to_predict}: {predicted_population[0]}")
-    print(f"Growth rate: {growth_rate}")
+    # print(f"Predicted population for the entire purok in year {year_to_predict}: {predicted_population[0]}")
+    # print(f"Growth rate: {growth_rate}")
     cursor.close()
     db.close()
     return jsonify({
@@ -244,7 +244,7 @@ def get_predicted_purok_population(year_to_predict, purok_name):
             'predicted_population': int(predicted_population_purok[0]),
             'population_count': int(purok_df['count'].sum())
         })
-    print(f"Predicted population for year {year_to_predict}: {predicted_population_all_puroks}")
+    # print(f"Predicted population for year {year_to_predict}: {predicted_population_all_puroks}")
     cursor.close()
     db.close()
     return jsonify({'predicted_population': predicted_population_all_puroks})
@@ -539,7 +539,7 @@ def get_predicted_budget_select():
         return jsonify({'predicted_budget': predicted_budget_all_projects})
 
     except Exception as ex:
-        print(ex)
+        # print(ex)
         return jsonify({'error': str(ex)}), 500
 
 
