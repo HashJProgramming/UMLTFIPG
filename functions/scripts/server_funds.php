@@ -9,9 +9,10 @@ $primaryKey = 'id';
 
 $columns = array(
     array('db' => 'id', 'dt' => 0),
-    array('db' => 'fund', 'dt' => 1),
-    array('db' => 'status', 'dt' => 2),
-    array('db' => 'created_at', 'dt' => 3)
+    array('db' => 'project_id', 'dt' => 1),
+    array('db' => 'fund', 'dt' => 2),
+    array('db' => 'status', 'dt' => 3),
+    array('db' => 'created_at', 'dt' => 4)
 );
 
  
@@ -23,10 +24,10 @@ $sql_details = array(
     'host' => '127.0.0.1'
 );
  
-$where = "id = '$id'";
+$where = "project_id = '$id'";
 
 require( 'ssp.class.php' );
  
 echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $where)
+    SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, $where)
 );

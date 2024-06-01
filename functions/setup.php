@@ -61,8 +61,9 @@
             type TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           );
+        ");
 
-
+        $db->exec("
 
           CREATE VIEW IF NOT EXISTS residents_view_female AS
             SELECT 
@@ -105,6 +106,7 @@
               TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age,
               `created_at`
             FROM `residents`;
+            
         ");
 
         $db->beginTransaction();

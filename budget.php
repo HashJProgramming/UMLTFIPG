@@ -49,6 +49,7 @@ $id = $_GET['id'];
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Project ID</th>
                                 <th>Fund</th>
                                 <th>Status</th>
                                 <th>Date</th>
@@ -60,6 +61,7 @@ $id = $_GET['id'];
                         <tfoot>
                             <tr>
                                 <th>ID</th>
+                                <th>Project ID</th>
                                 <th>Fund</th>
                                 <th>Status</th>
                                 <th>Date</th>
@@ -179,7 +181,7 @@ $id = $_GET['id'];
                 },
                 columnDefs: [
                     {
-                        targets: 1,
+                        targets: 2,
                         render: function (data, type, row) {
                             return '₱' + parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         }
