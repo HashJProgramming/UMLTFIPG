@@ -401,6 +401,7 @@ include_once 'functions/get-tables.php';
 
                 console.log(id, purok);
             });
+            
             $(document).on("click", 'button[data-bs-target="#remove"]', function () {
                 var id = $(this).data("id");
                 $('input[name="data_id"]').val(id);

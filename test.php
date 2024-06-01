@@ -48,6 +48,21 @@
             </table>
         </div>
     </div>
+
+    <form id="predictionForm">
+        <label for="purok_name">Purok Name:</label>
+        <input type="text" id="purok_name" name="purok_name"><br>
+        
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date"><br>
+        
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date"><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
@@ -114,6 +129,43 @@
                     }
                 }
             });
+
+
+            $('form').submit(function(event) {
+                event.preventDefault();
+                var formDataArray = $(this).serializeArray();
+                var formData = {};
+
+                $.each(formDataArray, function(index, field) {
+                    formData[field.name] = field.value;
+                });
+
+                var jsonData = JSON.stringify(formData);
+                console.log(jsonData);
+
+                // Send AJAX request to the API
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/predicted_purok_sex',
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // Handle the API response here
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        // Handle any errors that occur during the API request
+                        console.log(error);
+                    }
+                });
+            });
+
+            $(document).on("click", 'button[data-bs-target="#remove"]', function () {
+                var id = $(this).data("id");
+                $('input[name="data_id"]').val(id);
+                console.log(id);
+            });
+
         });
 
     </script>

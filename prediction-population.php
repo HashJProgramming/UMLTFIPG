@@ -80,8 +80,8 @@ foreach ($data['predicted_population'] as $purok) {
                             <p class='text-center'>Population</p>
                             <div></div>
                             <div class='d-xl-flex justify-content-xl-center'>
-                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Population ".htmlspecialchars($purok['population_count'])."</span>
-                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Predicted ". htmlspecialchars($purok['predicted_population']) ."</span></div>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Population ".htmlspecialchars(number_format($purok['population_count'], 0))."</span>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Predicted ". htmlspecialchars(number_format($purok['predicted_population'], 0)) ."</span></div>
                             <div class='mb-3 mt-3'>
                                 <div class='row'>
                                     <div class='col'>
@@ -90,7 +90,7 @@ foreach ($data['predicted_population'] as $purok) {
                                                     <path fill-rule='evenodd' d='M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8'></path>
                                                 </svg></div>
                                             <div class='text-center'>
-                                                <p class='fw-bold mb-0'>Male</p><span class='badge bg-primary'>Population ".htmlspecialchars($purok['total_male'])."</span>
+                                                <p class='fw-bold mb-0'>Male</p><span class='badge bg-primary'>Population ".htmlspecialchars(number_format($purok['total_male'], 0))."</span>
                                             </div>
                                         </div>
                                     </div>
@@ -100,12 +100,12 @@ foreach ($data['predicted_population'] as $purok) {
                                                     <path fill-rule='evenodd' d='M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5'></path>
                                                 </svg></div>
                                             <div class='text-center'>
-                                                <p class='fw-bold mb-0'>Female</p><span class='badge bg-danger'>Population ".htmlspecialchars($purok['total_female'])."</span>
+                                                <p class='fw-bold mb-0'>Female</p><span class='badge bg-danger'>Population ".htmlspecialchars(number_format($purok['total_female'], 0))."</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div><button class='btn btn-primary w-100' type='button' data-bs-target='#predict-modal' data-bs-toggle='modal'>Predict</button>
+                            </div><button class='btn btn-primary w-100' type='button' data-bs-target='#predict-modal' data-bs-toggle='modal' data-id='".htmlspecialchars($purok['purok'])."'>Predict</button>
                         </div>
                     </div>
                 </div>
@@ -126,56 +126,57 @@ echo "</ul>";
                     <h4 class="modal-title">Manual Prediction</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Here you can manually predict. (ambot ikaw na butang unsa description diri)</p>
                     <form>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3"><input class="form-control form-control" placeholder="Confirm Password" name="start_predict" type="date"><label class="form-label" for="floatingInput">Starting Date</label></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3"><input class="form-control form-control" placeholder="New Password" name="end_predict" type="date"><label class="form-label" for="floatingInput">End Date</label></div>
+                        <input type="hidden" name="purok_name">
+                        <p>Here you can manually predict. (ambot ikaw na butang unsa description diri)</p>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3"><input class="form-control form-control" placeholder="Confirm Password" name="start_date" type="date"><label class="form-label" for="floatingInput">Starting Date</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3"><input class="form-control form-control" placeholder="New Password" name="end_date" type="date"><label class="form-label" for="floatingInput">End Date</label></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                    <div>
-                        <h4 class="text-center">ORCHIDS</h4>
-                        <p class="text-center">Population</p>
-                        <div class="d-flex justify-content-xl-center">
-                            <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pie-chart-fill">
+                            <div>
+                                <h4 class="text-center">ORCHIDS</h4>
+                            <p class="text-center">Population</p>
+                            <div class="d-flex justify-content-xl-center">
+                                <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pie-chart-fill">
                                     <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z"></path>
                                 </svg></div>
-                            <div class="text-center">
-                                <p class="fw-bold mb-0">Predicted Population</p><span class="badge bg-primary fs-4">Population 42</span>
+                                <div class="text-center">
+                                    <p class="fw-bold mb-0">Predicted Population</p><span class="badge bg-primary fs-4" id="predicted_total">Population 0</span>
+                                </div>
                             </div>
-                        </div>
-                        <div></div>
-                        <div class="mb-3 mt-3"></div>
-                        <div class="mb-3 mt-3">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="d-flex justify-content-xl-center">
-                                        <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-gender-male">
+                            <div></div>
+                            <div class="mb-3 mt-3"></div>
+                            <div class="mb-3 mt-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-xl-center">
+                                            <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-gender-male">
                                                 <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8"></path>
                                             </svg></div>
-                                        <div class="text-center">
-                                            <p class="fw-bold mb-0">Male</p><span class="badge bg-primary">Population 42</span>
+                                            <div class="text-center">
+                                                <p class="fw-bold mb-0">Male</p><span class="badge bg-primary" id="predicted_male">Population 0</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col">
-                                    <div class="d-flex justify-content-xl-center">
-                                        <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-gender-female">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-xl-center">
+                                            <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-gender-female">
                                                 <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5"></path>
-                                            </svg></div>
-                                        <div class="text-center">
-                                            <p class="fw-bold mb-0">Female</p><span class="badge bg-danger">Population 23</span>
+                                                </svg></div>
+                                            <div class="text-center">
+                                                <p class="fw-bold mb-0">Female</p><span class="badge bg-danger" id="predicted_female">Population 0</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div><button class="btn btn-primary w-100" type="button">Predict</button>
+                            </div><button class="btn btn-primary w-100" type="submit">Predict</button>
+                    </form>
                     </div>
                 </div>
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button></div>
@@ -194,6 +195,70 @@ echo "</ul>";
     <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            $('form').submit(function(event) {
+                event.preventDefault();
+                var formDataArray = $(this).serializeArray();
+                var formData = {};
+
+                $.each(formDataArray, function(index, field) {
+                    formData[field.name] = field.value;
+                });
+
+                var jsonData = JSON.stringify(formData);
+                console.log(jsonData);
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/predicted_purok_sex',
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // console.log(response);
+
+                        var predictedPopulation = response.predicted_population;
+
+                        var malePopulation = predictedPopulation.find(function(item) {
+                            return item.sex === "Male";
+                        });
+
+                        var femalePopulation = predictedPopulation.find(function(item) {
+                            return item.sex === "Female";
+                        });
+
+
+                        if (malePopulation) {
+                            $('#predicted_male').text(formatNumber(malePopulation.predicted_population));
+                        }
+
+                        if (femalePopulation) {
+                            $('#predicted_female').text(formatNumber(femalePopulation.predicted_population));
+                        }
+                        if (predictedPopulation) {
+                            var totalPopulation = (femalePopulation.predicted_population + malePopulation.predicted_population);
+                            $('#predicted_total').text("Population " + formatNumber(totalPopulation));
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+
+                $(document).on("click", 'button[data-bs-target="#predict-modal"]', function () {
+                    var id = $(this).data("id");
+                    $('input[name="purok_name"]').val(id);
+                    console.log(id);
+                });
+                
+                function formatNumber(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+            });
+    </script>
 </body>
 
 </html>

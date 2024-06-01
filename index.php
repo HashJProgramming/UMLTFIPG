@@ -44,7 +44,7 @@ include_once 'functions/get-data.php';
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span class="text-success">TOTAL RESIDENTS</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo get_residents(); ?></span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo number_format(get_residents(), 0); ?></span></div>
                             </div>
                             <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
                         </div>
@@ -57,7 +57,7 @@ include_once 'functions/get-data.php';
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>TOTAL PROJECTS</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo get_projects(); ?></span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo number_format(get_projects(), 0); ?></span></div>
                             </div>
                             <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                         </div>
@@ -70,7 +70,7 @@ include_once 'functions/get-data.php';
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span class="text-success">TOTAL MALE</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo get_male(); ?></span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo number_format( get_male(), 0); ?></span></div>
                             </div>
                             <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
                         </div>
@@ -83,7 +83,7 @@ include_once 'functions/get-data.php';
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span class="text-success">TOTAL FEMALE</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo get_female(); ?></span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span><?php echo number_format(get_female(), 0); ?></span></div>
                             </div>
                             <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
                         </div>

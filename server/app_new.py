@@ -8,7 +8,11 @@ from sklearn.model_selection import train_test_split
 import json
 import matplotlib.pyplot as plt
 import mysql.connector
+from flask_cors import CORS
+
 app = Flask(__name__)
+
+CORS(app)
 
 def database_connect():
     db = mysql.connector.connect(
@@ -267,43 +271,119 @@ def get_predicted_purok_population(year_to_predict, purok_name):
     db.close()
     return jsonify({'predicted_population': predicted_population_all_puroks})
 
-@app.route('/predicted_purok_sex/<int:year_to_predict>/<purok_name>', methods=['GET'])
-def get_predicted_purok_population_sex(year_to_predict, purok_name):
+
+
+
+@app.route('/predicted_purok_sex', methods=['POST'])
+def get_predicted_purok_population_sex():
     try:
-        query = f"""
+        data = request.get_json()
+        if not data or 'start_date' not in data or 'end_date' not in data or 'purok_name' not in data:
+            return jsonify({'error': 'Invalid input'}), 400
+        
+        start_date = data['start_date']
+        end_date = data['end_date']
+        purok_name = data['purok_name']
+        
+        # Extract the year from end_date
+        year_to_predict = datetime.datetime.strptime(end_date, "%Y-%m-%d").year + 1
+        
+        query = """
         SELECT purok, YEAR(created_at) AS year, sex, COUNT(*) AS count 
         FROM residents 
-        WHERE purok = '{purok_name}' 
+        WHERE purok = %s AND created_at BETWEEN %s AND %s
         GROUP BY purok, YEAR(created_at), sex
         """
+        
         db, cursor = database_connect()
-        cursor.execute(query)
+        cursor.execute(query, (purok_name, start_date, end_date))
         data = cursor.fetchall()
         df = pd.DataFrame(data, columns=['purok', 'year', 'sex', 'count'])
         
         predicted_population_all_puroks = []
+        
         for purok in df['purok'].unique():
             for sex in df['sex'].unique():
                 purok_sex_df = df[(df['purok'] == purok) & (df['sex'] == sex)]
-                if not purok_sex_df.empty:
-                    X_train, X_test, y_train, y_test = train_test_split(purok_sex_df[['year']], purok_sex_df['count'], test_size=0.2, random_state=42)
-                    regression = LinearRegression()
-                    regression.fit(X_train, y_train)
-                    predicted_population_purok_sex = regression.predict([[year_to_predict]])
+                
+                if len(purok_sex_df) < 2:
                     predicted_population_all_puroks.append({
                         'purok': purok,
                         'sex': sex,
-                        'predicted_population': int(purok_sex_df['count'].sum() + predicted_population_purok_sex[0]),
+                        'predicted_population': None,
                         'population_count': int(purok_sex_df['count'].sum())
                     })
+                    continue
+
+                X_train, X_test, y_train, y_test = train_test_split(
+                    purok_sex_df[['year']], 
+                    purok_sex_df['count'], 
+                    test_size=0.2, 
+                    random_state=42
+                )
+                regression = LinearRegression()
+                regression.fit(X_train, y_train)
+                predicted_population_purok_sex = regression.predict([[year_to_predict]])
+
+                predicted_population_all_puroks.append({
+                    'purok': purok,
+                    'sex': sex,
+                    'predicted_population': int(purok_sex_df['count'].sum() + predicted_population_purok_sex[0]),
+                    'population_count': int(purok_sex_df['count'].sum())
+                })
         
         cursor.close()
         db.close()
+        
         return jsonify({'predicted_population': predicted_population_all_puroks})
+    
     except Exception as ex:
         return jsonify({'error': str(ex)})
-    
 
+
+# @app.route('/predicted_purok_sex', methods=['POST'])
+# def get_predicted_purok_population_sex():
+#     try:
+#         data = request.get_json()
+#         if not data or 'start_date' not in data or 'end_date' not in data:
+#             return jsonify({'error': 'Invalid input'}), 400
+        
+#         query = f"""
+#         SELECT purok, YEAR(created_at) AS year, sex, COUNT(*) AS count 
+#         FROM residents 
+#         WHERE purok = '{data['purok_name']}' AND created_at BETWEEN '{data['start_date']}' AND '{data['end_date']}'
+#         GROUP BY purok, YEAR(created_at), sex
+#         """
+#         db, cursor = database_connect()
+#         cursor.execute(query)
+#         data = cursor.fetchall()
+#         df = pd.DataFrame(data, columns=['purok', 'year', 'sex', 'count'])
+        
+#         predicted_population_all_puroks = []
+#         for purok in df['purok'].unique():
+#             for sex in df['sex'].unique():
+#                 purok_sex_df = df[(df['purok'] == purok) & (df['sex'] == sex)]
+#                 if not purok_sex_df.empty:
+#                     X_train, X_test, y_train, y_test = train_test_split(purok_sex_df[['year']], purok_sex_df['count'], test_size=0.2, random_state=42)
+#                     regression = LinearRegression()
+#                     regression.fit(X_train, y_train)
+#                     predicted_population_purok_sex = regression.predict([data['year_to_predict']])
+#                     predicted_population_all_puroks.append({
+#                         'purok': purok,
+#                         'sex': sex,
+#                         'predicted_population': int(purok_sex_df['count'].sum() + predicted_population_purok_sex[0]),
+#                         'population_count': int(purok_sex_df['count'].sum())
+#                     })
+        
+#         cursor.close()
+#         db.close()
+#         return jsonify({'predicted_population': predicted_population_all_puroks})
+#     except Exception as ex:
+#         return jsonify({'error': str(ex)})
+    
+# @app.route('/test', methods=['POST'])
+# def test():
+#     return request.get_json()
 
 # @app.route('/predicted_purok/<int:year_to_predict>/<purok_name>', methods=['GET'])
 # def get_predicted_purok_population(year_to_predict, purok_name):
