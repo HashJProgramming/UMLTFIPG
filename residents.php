@@ -15,8 +15,8 @@ include_once 'functions/get-tables.php';
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -39,13 +39,15 @@ include_once 'functions/get-tables.php';
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Residents</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Resident</a>
         </div>
+    </div>
+    <div class="container-fluid">
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-success m-0 fw-bold">Residents List</p>
+                <p class="text-success m-0 fw-bold"><span class="badge bg-success"></span>&nbsp;Table</p>
             </div>
             <div class="card-body">
-                <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <table class="table my-0 table-display" id="dataTable">
+                <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
+                    <table class="table table-striped nowrap" cellspacing="0" id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -55,25 +57,34 @@ include_once 'functions/get-tables.php';
                                 <th>Suffix</th>
                                 <th>Phone</th>
                                 <th>Purok</th>
-                                <th>Previous Address</th>
+                                <th>Phone</th>
                                 <th>Sex</th>
                                 <th>Age</th>
                                 <th>Birthdate</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php
-                            resident_list();
-                            ?>
-                        </tbody>
                         <tfoot>
-                            <tr></tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Lastname</th>
+                                <th>Firstname</th>
+                                <th>Middlename</th>
+                                <th>Suffix</th>
+                                <th>Phone</th>
+                                <th>Purok</th>
+                                <th>Phone</th>
+                                <th>Sex</th>
+                                <th>Age</th>
+                                <th>Birthdate</th>
+                                <th class="text-center">Action</th>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
         </div>
+    
     </div>
     <div class="modal fade" role="dialog" tabindex="-1" id="add">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -289,15 +300,115 @@ include_once 'functions/get-tables.php';
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
-    <script src="assets/js/vfs_fonts.js"></script>
-    <script src="assets/js/jszip.min.js"></script>
-    <script src="assets/js/Application-Form-Bootstrap-Image-Uploader.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script>
+
+        const currentPath = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get("type");
+        const message = urlParams.get("message");
+
+        $(document).ready(function() {
+            if (type == "success") {
+                Swal.fire("Success!", message, "success");
+            } else if (type == "error") {
+                Swal.fire("Error!", message, "error");
+            }
+
+            var table = new DataTable("#dataTable", {
+                ajax: 'functions/scripts/server_residents.php',
+                processing: true,
+                serverSide: true,
+                pageLength: 50,
+                dom: '<"top"Bfrtip<"clear">',
+                    buttons: [
+                    {
+                        extend: "excel",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-excel"></i> EXCEL',
+                    },
+                    {
+                        extend: "pdf",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-pdf"></i> PDF',
+                    },
+                    {
+                        extend: "print",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-print"></i> Print',
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        autoPrint: true,
+                        exportOptions: {
+                        columns: ":visible",
+                        },
+                        customize: function (win) {
+                        $(win.document.body)
+                            .find("table")
+                            .addClass("display")
+                            .css("font-size", "9px");
+                        $(win.document.body)
+                            .find("tr:nth-child(odd) td")
+                            .each(function (index) {
+                            $(this).css("background-color", "#D0D0D0");
+                            });
+                        $(win.document.body).find("h1").css("text-align", "center");
+                        },
+                    },
+                ],      
+                responsive: {
+                    details: {
+                        display: DataTable.Responsive.display.modal({
+                            header: function (row) {
+                                var data = row.data();
+                                return 'Details for ' + data[1];
+                            }
+                        }),
+                        renderer: DataTable.Responsive.renderer.tableAll({
+                            tableClass: 'table'
+                        })
+                    }
+                }
+            });
+
+            $(document).on("click", 'button[data-bs-target="#update"]', function () {
+                var id = $(this).data("id");
+                var firstname = $(this).data("firstname");
+                var lastname = $(this).data("lastname");
+                var middlename = $(this).data("middlename");
+                var suffix = $(this).data("suffix");
+                var birthdate = $(this).data("birthdate");
+                var phone = $(this).data("phone");
+                var sex = $(this).data("sex");
+                var address = $(this).data("address");
+                var purok = $(this).data("purok");
+
+                $('input[name="data_id"]').val(id);
+                $('input[name="firstname"]').val(firstname);
+                $('input[name="lastname"]').val(lastname);
+                $('input[name="middlename"]').val(middlename);
+                $('input[name="suffix"]').val(suffix);
+                $('input[name="birthdate"]').val(birthdate);
+                $('input[name="phone"]').val(phone);
+                $('input[name="sex"]').val(sex);
+                $('input[name="address"]').val(address);
+                $('select[name="purok"]').val(purok);
+
+                console.log(id, purok);
+            });
+            $(document).on("click", 'button[data-bs-target="#remove"]', function () {
+                var id = $(this).data("id");
+                $('input[name="data_id"]').val(id);
+                console.log(id);
+            });
+        });
+
+    </script>
 </body>
 
 </html>

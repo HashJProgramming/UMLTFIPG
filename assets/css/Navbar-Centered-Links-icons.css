@@ -1,3 +1,20 @@
+/* Add custom scroll */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8bffa8;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8bff95;
+}
+
 .bs-icon {
   --bs-icon-size: .75rem;
   display: flex;

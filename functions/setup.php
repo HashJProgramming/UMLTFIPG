@@ -60,7 +60,51 @@
             logs TEXT,
             type TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+          );
+
+
+
+          CREATE VIEW IF NOT EXISTS residents_view_female AS
+            SELECT 
+                id,
+                firstname,
+                lastname,
+                middlename,
+                suffix,
+                sex,
+                birthdate,
+                TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age
+            FROM residents
+            WHERE sex = 'Female';
+
+          CREATE VIEW IF NOT EXISTS residents_view_male AS
+            SELECT 
+                id,
+                firstname,
+                lastname,
+                middlename,
+                suffix,
+                sex,
+                birthdate,
+                TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age
+            FROM residents
+            WHERE sex = 'Male';
+
+          CREATE VIEW IF NOT EXISTS residents_view AS
+            SELECT 
+              `id`,
+              `firstname`,
+              `lastname`,
+              `middlename`, 
+              `suffix`, 
+              `purok`,
+              `address`, 
+              `phone`, 
+              `sex`, 
+              `birthdate`,
+              TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age,
+              `created_at`
+            FROM `residents`;
         ");
 
         $db->beginTransaction();

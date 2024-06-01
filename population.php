@@ -16,6 +16,7 @@ include_once 'functions/get-tables.php';
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -38,13 +39,12 @@ include_once 'functions/get-tables.php';
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Population - Under Maintenance</h3>
         </div>
-    </div>
-    <div class="row row-cols-2">
-        <div class="col">
-            <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-success fw-bold m-0">Male</h6>
-                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+        <div class="row row-cols-2">
+            <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="text-success fw-bold m-0">Male</h6>
+                        <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
                             <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
                             <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
@@ -63,15 +63,15 @@ include_once 'functions/get-tables.php';
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-success fw-bold m-0">Female</h6>
                     <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
-                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
-                        </div>
+                    <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="chart-area">
-                        <?php female_month_chart(); ?>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <?php female_month_chart(); ?>
                     </div>
                 </div>
             </div>
@@ -79,11 +79,11 @@ include_once 'functions/get-tables.php';
         <div class="col-xl-6">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"><?php echo get_male(); ?></span>&nbsp;Male</p>
+                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"></span>&nbsp;Male</p>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                        <table class="table my-0 table-display">
+                    <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
+                        <table class="table my-0 table-display" id="dataTable-1">
                             <thead>
                                 <tr>
                                     <th>Lastname</th>
@@ -94,13 +94,16 @@ include_once 'functions/get-tables.php';
                                     <th>Age</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                                <?php male_list(); ?>
-
-                            </tbody>
+                            
                             <tfoot>
-                                <tr></tr>
+                                <tr>
+                                    <th>Lastname</th>
+                                    <th>Firstname</th>
+                                    <th>Middlename</th>
+                                    <th>Suffix</th>
+                                    <th>Sex</th>
+                                    <th>Age</th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -110,11 +113,11 @@ include_once 'functions/get-tables.php';
         <div class="col-xl-6">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"><? echo get_female(); ?></span>&nbsp;Female</p>
+                    <p class="text-success m-0 fw-bold"><span class="badge bg-success"></span>&nbsp;Female</p>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                        <table class="table my-0 table-display">
+                    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                        <table class="table my-0 table-display" id="dataTable-2" >
                             <thead>
                                 <tr>
                                     <th>Lastname</th>
@@ -125,13 +128,16 @@ include_once 'functions/get-tables.php';
                                     <th>Age</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                
-                                <?php female_list(); ?>
-
-                            </tbody>
+                            
                             <tfoot>
-                                <tr></tr>
+                                <tr>
+                                    <th>Lastname</th>
+                                    <th>Firstname</th>
+                                    <th>Middlename</th>
+                                    <th>Suffix</th>
+                                    <th>Sex</th>
+                                    <th>Age</th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -139,19 +145,150 @@ include_once 'functions/get-tables.php';
             </div>
         </div>
     </div>
+</div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
     <script src="assets/js/vfs_fonts.js"></script>
-    <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script>
+
+        const currentPath = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get("type");
+        const message = urlParams.get("message");
+
+        $(document).ready(function() {
+            if (type == "success") {
+                Swal.fire("Success!", message, "success");
+            } else if (type == "error") {
+                Swal.fire("Error!", message, "error");
+            }
+
+            new DataTable("#dataTable-1", {
+                ajax: 'functions/scripts/server_population_male.php',
+                processing: true,
+                serverSide: true,
+                dom: '<"top"Bfrtip<"clear">',
+                    buttons: [
+                    {
+                        extend: "excel",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-excel"></i> EXCEL',
+                    },
+                    {
+                        extend: "pdf",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-pdf"></i> PDF',
+                    },
+                    {
+                        extend: "print",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-print"></i> Print',
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        autoPrint: true,
+                        exportOptions: {
+                        columns: ":visible",
+                        },
+                        customize: function (win) {
+                        $(win.document.body)
+                            .find("table")
+                            .addClass("display")
+                            .css("font-size", "9px");
+                        $(win.document.body)
+                            .find("tr:nth-child(odd) td")
+                            .each(function (index) {
+                            $(this).css("background-color", "#D0D0D0");
+                            });
+                        $(win.document.body).find("h1").css("text-align", "center");
+                        },
+                    },
+                ],      
+                responsive: {
+                    details: {
+                        display: DataTable.Responsive.display.modal({
+                            header: function (row) {
+                                var data = row.data();
+                                return 'Details for ' + data[1];
+                            }
+                        }),
+                        renderer: DataTable.Responsive.renderer.tableAll({
+                            tableClass: 'table'
+                        })
+                    }
+                }
+            });
+
+            new DataTable("#dataTable-2", {
+                ajax: 'functions/scripts/server_population_female.php',
+                processing: true,
+                serverSide: true,
+                dom: '<"top"Bfrtip<"clear">',
+                    buttons: [
+                    {
+                        extend: "excel",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-excel"></i> EXCEL',
+                    },
+                    {
+                        extend: "pdf",
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-file-pdf"></i> PDF',
+                    },
+                    {
+                        extend: "print",
+                        className: "btn btn-primary",
+                        text: '<i class="fa fa-print"></i> Print',
+                        title:
+                        "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        autoPrint: true,
+                        exportOptions: {
+                        columns: ":visible",
+                        },
+                        customize: function (win) {
+                        $(win.document.body)
+                            .find("table")
+                            .addClass("display")
+                            .css("font-size", "9px");
+                        $(win.document.body)
+                            .find("tr:nth-child(odd) td")
+                            .each(function (index) {
+                            $(this).css("background-color", "#D0D0D0");
+                            });
+                        $(win.document.body).find("h1").css("text-align", "center");
+                        },
+                    },
+                ],      
+                responsive: {
+                    details: {
+                        display: DataTable.Responsive.display.modal({
+                            header: function (row) {
+                                var data = row.data();
+                                return 'Details for ' + data[1];
+                            }
+                        }),
+                        renderer: DataTable.Responsive.renderer.tableAll({
+                            tableClass: 'table'
+                        })
+                    }
+                }
+            });
+
+        });
+
+    </script>
 </body>
 
 </html>
