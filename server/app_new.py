@@ -177,13 +177,13 @@ def get_predicted_population_table(year_to_predict):
 
         predicted_population_all_puroks.append([
             purok,
-            regression.coef_[0],
             int(purok_df['count'].sum()),
             int(predicted_population_purok[0]),
             int(purok_df['male_count'].sum()),
             int(purok_df['female_count'].sum()),
             int(predicted_male_population[0]),
-            int(predicted_female_population[0])
+            int(predicted_female_population[0]),
+            regression.coef_[0]
         ])
 
     cursor.close()
@@ -317,6 +317,239 @@ def get_predicted_purok_population_sex():
     
     except Exception as ex:
         return jsonify({'error': str(ex)})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_budget/<int:year_to_predict>', methods=['GET'])
+def get_predicted_budget(year_to_predict):
+    query = """
+    SELECT 
+        pf.project_id, 
+        p.name AS project_name,
+        YEAR(pf.created_at) AS year, 
+        pf.fund
+    FROM project_fund pf
+    JOIN projects p ON pf.project_id = p.id
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['project_id', 'project_name', 'year', 'fund'])
+
+    predicted_budget_all_projects = []
+
+    for project_id in df['project_id'].unique():
+        project_df = df[df['project_id'] == project_id]
+        project_name = project_df['project_name'].iloc[0]
+
+        if len(project_df) < 2:
+            predicted_budget_all_projects.append({
+                'project_id': int(project_id),
+                'project_name': project_name,
+                'predicted_budget': None,
+                'total_fund': float(project_df['fund'].sum())
+            })
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            project_df[['year']], 
+            project_df['fund'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_budget = regression.predict([[year_to_predict]])
+
+        predicted_budget_all_projects.append({
+            'growth_rate': regression.coef_[0],
+            'project_id': int(project_id),
+            'project_name': project_name,
+            'predicted_budget': float(predicted_budget[0]),
+            'total_fund': float(project_df['fund'].sum())
+        })
+
+    cursor.close()
+    db.close()
+    
+    return jsonify({'predicted_budget': predicted_budget_all_projects})
+
+
+
+
+
+
+
+@app.route('/predicted_budget_table/<int:year_to_predict>', methods=['GET'])
+def get_predicted_budget_table(year_to_predict):
+    query = """
+    SELECT 
+        pf.project_id, 
+        p.name AS project_name,
+        YEAR(pf.created_at) AS year, 
+        pf.fund
+    FROM project_fund pf
+    JOIN projects p ON pf.project_id = p.id
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['project_id', 'project_name', 'year', 'fund'])
+
+    predicted_budget_all_projects = []
+
+    for project_id in df['project_id'].unique():
+        project_df = df[df['project_id'] == project_id]
+        project_name = project_df['project_name'].iloc[0]
+
+        if len(project_df) < 2:
+            predicted_budget_all_projects.append([
+                int(project_id),
+                project_name,
+                None,  # Growth rate
+                float(project_df['fund'].sum()),  # Total fund
+                None  # Predicted budget
+            ])
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            project_df[['year']], 
+            project_df['fund'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_budget = regression.predict([[year_to_predict]])
+
+        predicted_budget_all_projects.append([
+            int(project_id),
+            project_name,
+            float(project_df['fund'].sum()),  # Total fund
+            float(predicted_budget[0]),  # Predicted budget
+            regression.coef_[0]  # Growth rate
+        ])
+
+    cursor.close()
+    db.close()
+
+    draw = request.args.get('draw', type=int, default=0)
+    records_total = len(predicted_budget_all_projects)
+    records_filtered = records_total
+
+    return jsonify({
+        'draw': draw,
+        'recordsTotal': records_total,
+        'recordsFiltered': records_filtered,
+        'data': predicted_budget_all_projects
+    })
+
+
+
+
+
+
+@app.route('/predicted_budget_select', methods=['POST'])
+def get_predicted_budget_select():
+    try:
+        data = request.get_json()
+        if not data or 'start_date' not in data or 'end_date' not in data or 'budget_id' not in data:
+            return jsonify({'error': 'Invalid input'}), 400
+
+        start_date = data['start_date']
+        end_date = data['end_date']
+        budget_id = data['budget_id']
+        # Extract the year to predict from the end_date
+        year_to_predict = int(end_date[:4]) + 1
+
+        # Query to fetch the current budget for the specified budget ID and date range
+        current_budget_query = """
+        SELECT 
+            SUM(pf.fund) AS current_budget
+        FROM project_fund pf
+        WHERE project_id = %s AND pf.created_at BETWEEN %s AND %s
+        """
+        db, cursor = database_connect()
+        cursor.execute(current_budget_query, (budget_id, start_date, end_date))
+        current_budget_data = cursor.fetchone()
+        current_budget = current_budget_data[0] if current_budget_data else 0
+
+        # Query to fetch the historical fund data for the specified budget ID and date range
+        historical_fund_query = """
+        SELECT 
+            pf.project_id, 
+            YEAR(pf.created_at) AS year, 
+            SUM(pf.fund) AS total_fund
+        FROM project_fund pf
+        WHERE project_id = %s AND pf.created_at BETWEEN %s AND %s
+        GROUP BY pf.project_id, year
+        ORDER BY pf.project_id, year
+        """
+        cursor.execute(historical_fund_query, (budget_id, start_date, end_date))
+        historical_fund_data = cursor.fetchall()
+
+        predicted_budget_all_projects = []
+
+        for project_id in set(row[0] for row in historical_fund_data):
+            project_data = [(row[1], row[2]) for row in historical_fund_data if row[0] == project_id]
+            years = np.array([d[0] for d in project_data]).reshape(-1, 1)
+            funds = np.array([d[1] for d in project_data])
+
+            if len(set(years.flatten())) < 2:
+                # Not enough data to predict, append the last known fund
+                predicted_budget_all_projects.append({
+                    'project_id': project_id,
+                    'current_budget': float(current_budget),
+                    'predicted_budget': float(funds[-1])
+                })
+                continue
+
+            # Train a linear regression model to predict budget growth rate
+            X_train, X_test, y_train, y_test = train_test_split(years, funds, test_size=0.2, random_state=42)
+            regression = LinearRegression()
+            regression.fit(X_train, y_train)
+
+            # Predict the budget for the end date
+            predicted_budget = regression.predict([[year_to_predict]])[0]
+
+            predicted_budget_all_projects.append({
+                'project_id': project_id,
+                'current_budget': float(current_budget),
+                'predicted_budget': float(predicted_budget)
+            })
+
+        cursor.close()
+        db.close()
+
+        return jsonify({'predicted_budget': predicted_budget_all_projects})
+
+    except Exception as ex:
+        print(ex)
+        return jsonify({'error': str(ex)}), 500
+
+
+
+
+
+
+
+
+
 
 
 

@@ -134,25 +134,25 @@ echo "</ul>";
                             <thead>
                                 <tr>
                                     <th>PUROK</th>
-                                    <th>GROWTH RATE</th>
                                     <th>POPULATION</th>
                                     <th>PREDICTED POPULATION</th>
                                     <th>POPULATION MALE</th>
                                     <th>PREDICTED MALE</th>
                                     <th>POPULATION FEMALE</th>
                                     <th>PREDICTED FEMALE</th>
+                                    <th>GROWTH RATE</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>PUROK</th>
-                                    <th>GROWTH RATE</th>
                                     <th>POPULATION</th>
                                     <th>PREDICTED POPULATION</th>
                                     <th>POPULATION MALE</th>
                                     <th>PREDICTED MALE</th>
                                     <th>POPULATION FEMALE</th>
                                     <th>PREDICTED FEMALE</th>
+                                    <th>GROWTH RATE</th>
                                 </tr>
                             </tfoot>
                         </table>

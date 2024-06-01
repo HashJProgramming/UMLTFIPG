@@ -320,7 +320,7 @@ include_once 'functions/get-tables.php';
                 ajax: 'functions/scripts/server_residents.php',
                 processing: true,
                 serverSide: true,
-                pageLength: 50,
+                pageLength: 20,
                 dom: '<"top"Bfrtip<"clear">',
                     buttons: [
                     {

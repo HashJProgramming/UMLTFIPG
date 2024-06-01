@@ -82,7 +82,7 @@ $id = $_GET['id'];
                                 <select class="form-select" name="status">
                                     <optgroup label="SELECT STATUS">
                                         <option value="APPROVED" selected="">APPROVED</option>
-                                        <option value="DISAPPROVED">DISAPPROVED</option>
+                                        <option value="REJECTED">REJECTED</option>
                                         <option value="POSTPONE">POSTPONE</option>
                                     </optgroup>
                                 </select>

@@ -1,4 +1,34 @@
 <?php
+// Define the API URL
+$getCurrentYear = date("Y") + 5;
+$apiUrl = "http://localhost:5000/predicted_budget/$getCurrentYear";
+
+// Using cURL for more robust error handling
+$ch = curl_init();
+
+// Set the URL and other options
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+// Execute the request
+$response = curl_exec($ch);
+
+// Check for cURL errors
+if (curl_errno($ch)) {
+    die('cURL error: ' . curl_error($ch));
+}
+
+// Close the cURL session
+curl_close($ch);
+
+// Decode the JSON response
+$data = json_decode($response, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die('Error decoding JSON response: ' . json_last_error_msg());
+}
+?>
+<?php
 include_once 'functions/authentication.php';
 ?>
 <!DOCTYPE html>
@@ -8,11 +38,12 @@ include_once 'functions/authentication.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Prediction Budget - UMLTFIPG</title>
-    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
+    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Budget ₱ Growth on the Budget of Barangay Begong">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -34,20 +65,281 @@ include_once 'functions/authentication.php';
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Prediction - Budget</h3>
+            <a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#view-table" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;View Table</a>
         </div>
-    </div><iframe src="http://<?php echo $localIP;?>:5000/budget" frameborder="0" allowtransparency="true" width="100%" height="750px"></iframe>
+        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+<?php
+foreach ($data['predicted_budget'] as $project) {
+         echo "
+         <div class='col'>
+                <div class='card mt-1 mb-1'>
+                    <div class='card-body p-4'>
+                        <div class='bs-icon-md bs-icon-rounded bs-icon-semi-white d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon'><svg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' fill='currentColor' viewBox='0 0 16 16' class='bi bi-bar-chart'>
+                                <path d='M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z'></path>
+                            </svg></div>
+                        <div>
+                            <h4 class='text-center'>".htmlspecialchars($project['project_name'])."</h4>
+                            <p class='text-center'>Budget</p>
+                            <div></div>
+                            <div class='d-xl-flex justify-content-xl-center'>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Budget ₱".htmlspecialchars(number_format($project['total_fund'], 0))."</span>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Predicted ₱". htmlspecialchars(number_format($project['total_fund'] + $project['predicted_budget'], 0)) ."</span></div>
+                            <div class='mb-3 mt-3'>
+                            </div>
+                            <button class='btn btn-primary w-100' type='button' data-bs-target='#predict-modal' data-bs-toggle='modal' data-id='".htmlspecialchars($project['project_id'])."' data-name='".htmlspecialchars($project['project_name'])."'>Predict</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         ";
+}
+
+echo "</ul>";
+?>
+       
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="view-table">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Table Budgets</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                    <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
+                        <table class="table table-striped nowrap" cellspacing="0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NAME</th>
+                                    <th>Budget</th>
+                                    <th>PREDICTED Budget</th>
+                                    <th>GROWTH RATE</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NAME</th>
+                                    <th>Budget</th>
+                                    <th>PREDICTED Budget</th>
+                                    <th>GROWTH RATE</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="predict-modal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Manual Prediction</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" name="budget_id">
+                        <p>Here you can manually predict. (ambot ikaw na butang unsa description diri)</p>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3"><input class="form-control form-control" placeholder="Confirm Password" name="start_date" type="date"><label class="form-label" for="floatingInput">Starting Date</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3"><input class="form-control form-control" placeholder="New Password" name="end_date" type="date"><label class="form-label" for="floatingInput">End Date</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-center" id="title_project_name"></h4>
+                            <p class="text-center">Budget</p>
+                            <div class="d-flex justify-content-xl-center">
+                                <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pie-chart-fill">
+                                    <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z"></path>
+                                </svg></div>
+                                <div class="text-center">
+                                    <p class="fw-bold mb-0">Predicted Budge</p><span class="badge bg-primary fs-4" id="predicted_total">Budget </span>
+                                </div>
+                            </div>
+                            <div></div>
+                            <div class="mb-3 mt-3"></div>
+                            <div class="mb-3 mt-3">
+                                
+                            </div><button class="btn btn-primary w-100" type="submit">Predict</button>
+                    </form>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+
+
+    
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
     <script src="assets/js/vfs_fonts.js"></script>
     <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            $('form').submit(function(event) {
+                event.preventDefault();
+                var formDataArray = $(this).serializeArray();
+                var formData = {};
+
+                $.each(formDataArray, function(index, field) {
+                    formData[field.name] = field.value;
+                });
+
+                var jsonData = JSON.stringify(formData);
+                console.log(jsonData);
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/predicted_budget_select',
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log(response);
+
+                        var predictedTotal = response.predicted_budget;
+                        if (predictedTotal.length > 0) {
+                            $('#predicted_total').text("Budget Predicted ₱" + formatNumber(predictedTotal[0].predicted_budget + predictedTotal[0].current_budget));
+                        } else {
+                            swal.fire({
+                                title: 'Error',
+                                text: 'An error occurred while predicting the population',
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while predicting the population',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+            
+
+
+                $(document).on("click", 'button[data-bs-target="#predict-modal"]', function () {
+                    var id = $(this).data("id");
+                    var name = $(this).data("name");
+                    $('input[name="budget_id"]').val(id);
+                    $('#title_project_name').text(name);
+                    $('#predicted_total').text("Budget Predicted ₱0")
+                    console.log(id, name);
+                });
+                
+                function formatNumber(number) {
+                    try {
+                        return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    } catch (error) {
+                        swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while predicting the population base on your input',
+                            icon: 'error'
+                        });
+                    }
+                }
+
+
+
+                $(document).on("click", 'a[data-bs-target="#view-table"]', function () {
+                    if (typeof table !== 'undefined' && $.fn.DataTable.isDataTable(table)) {
+                        table.destroy();
+                    }
+                    table = new DataTable("#dataTable", {
+                        ajax: 'http://localhost:5000/predicted_budget_table/2029',
+                        processing: true,
+                        serverSide: true,
+                        pageLength: 50,
+                        dom: '<"top"Bfrtip<"clear">',
+                        buttons: [
+                            {
+                                extend: "excel",
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-file-excel"></i> EXCEL',
+                            },
+                            {
+                                extend: "pdf",
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-file-pdf"></i> PDF',
+                            },
+                            {
+                                extend: "print",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-print"></i> Print',
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                autoPrint: true,
+                                exportOptions: {
+                                    columns: ":visible",
+                                },
+                                customize: function (win) {
+                                    $(win.document.body)
+                                        .find("table")
+                                        .addClass("display")
+                                        .css("font-size", "9px");
+                                    $(win.document.body)
+                                        .find("tr:nth-child(odd) td")
+                                        .each(function (index) {
+                                            $(this).css("background-color", "#D0D0D0");
+                                        });
+                                    $(win.document.body).find("h1").css("text-align", "center");
+                                },
+                            },
+                        ],
+                        responsive: {
+                            details: {
+                                display: DataTable.Responsive.display.modal({
+                                    header: function (row) {
+                                        var data = row.data();
+                                        return 'Details for ' + data[0];
+                                    }
+                                }),
+                                renderer: DataTable.Responsive.renderer.tableAll({
+                                    tableClass: 'table'
+                                })
+                            }
+                        },
+                        initComplete: function () {
+                            $('#dataTable').show();
+                        },
+                        drawCallback: function () {
+                            $('#dataTable').show();
+                        },
+                        preDrawCallback: function () {
+                            $('#dataTable').hide();
+                        }
+                    });
+                });
+
+
+
+            });
+    </script>
+    
 </body>
 
 </html>
