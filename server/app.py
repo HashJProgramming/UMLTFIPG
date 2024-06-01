@@ -2,240 +2,559 @@ import datetime
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
-import io
-import os
-import json
-from flask import Flask, request, jsonify, render_template, Response, send_file
+from flask import Flask, request, jsonify
 import socket
+from sklearn.model_selection import train_test_split
+import json
 import matplotlib.pyplot as plt
+import mysql.connector
+from flask_cors import CORS
 
-my_path = os.path.abspath(os.path.dirname(__file__))
-budget_path = pd.read_excel(f'{my_path}/data/budget.xlsx')
-population_path = pd.read_excel(f'{my_path}/data/population.xlsx')
 app = Flask(__name__)
 
-def selecting_purok(df, purok):
-    df = df.loc[df['Purok'] == purok].copy()
-    df.drop(['Purok'], axis=1, inplace=True)
-    df = df.T
-    df.dropna(inplace=True)
-    df = df.reset_index()
-    return df
+CORS(app)
 
-def prediction_model(df):
-    x = df.iloc[:, 0].values.reshape(-1,1)
-    y = df.iloc[:, 1].values.reshape(-1,1)
-    model = LinearRegression().fit(x,y)
-    return model
+def database_connect():
+    db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="umltfipg")
+    cursor = db.cursor()
+    return db, cursor
 
-def prediction(model, year):
-    return int(model.coef_[0][0] * year + model.intercept_[0])
+@app.route('/predicted_population/<int:year_to_predict>', methods=['GET'])
+def get_predicted_population(year_to_predict):
+    query = """
+    SELECT 
+        purok, 
+        YEAR(created_at) AS year, 
+        COUNT(*) AS count,
+        SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
+        SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
+    FROM residents 
+    GROUP BY purok, YEAR(created_at)
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['purok', 'year', 'count', 'male_count', 'female_count'])
 
-def selecting_project(df, project):
-    df = df.loc[df['Project'] == project].copy()
-    df.drop(['Project'], axis=1, inplace=True)
-    df = df.T
-    df.dropna(inplace=True)
-    df = df.reset_index()
-    return df
+    predicted_population_all_puroks = []
 
-def project_list_gen(df):
-    df.rename(columns={'Project Name':'Project'},inplace=True)
-    df['Project'] = df['Project'].apply(lambda row: row.lower())
-    lists = df['Project'].unique().tolist()
-    with open(f'{my_path}/project_list.json','w', encoding='utf-8') as f:
-        json.dump(lists, f, ensure_ascii=False,indent=4)
-    return lists, df
+    for purok in df['purok'].unique():
+        purok_df = df[df['purok'] == purok]
+        
+        if len(purok_df) < 2:
+            # If there's not enough data to perform a train-test split, skip or handle differently
+            predicted_population_all_puroks.append({
+                'purok': purok,
+                'predicted_population': None,
+                'population_count': int(purok_df['count'].sum()),
+                'growth_rate': None,
+                'total_male': int(purok_df['male_count'].sum()),
+                'total_female': int(purok_df['female_count'].sum()),
+                'predicted_male_population': None,
+                'predicted_female_population': None
+            })
+            continue
 
-def get_budget_prediction(start_year, end_year):
-    df = budget_path
-    lists, df = project_list_gen(df)
-    all_year_results = []
+        X_train, X_test, y_train, y_test = train_test_split(
+            purok_df[['year']], 
+            purok_df['count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_population_purok = regression.predict([[year_to_predict]])
 
-    for prediction_year in range(start_year, end_year + 1):
-        year_result = {
-            "Year": prediction_year,
-            "ProjectResult": []
-        }
-        for project in lists:
-            df_purok = selecting_project(df, project)
-            model = prediction_model(df_purok)
-            result = prediction(model, prediction_year)
-            year_result["ProjectResult"].append({'Project': project, 'Fund': result})
+        X_train_male, X_test_male, y_train_male, y_test_male = train_test_split(
+            purok_df[['year']], 
+            purok_df['male_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_male = LinearRegression()
+        regression_male.fit(X_train_male, y_train_male)
+        predicted_male_population = regression_male.predict([[year_to_predict]])
 
-        all_year_results.append(year_result)
-    return all_year_results
+        X_train_female, X_test_female, y_train_female, y_test_female = train_test_split(
+            purok_df[['year']], 
+            purok_df['female_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_female = LinearRegression()
+        regression_female.fit(X_train_female, y_train_female)
+        predicted_female_population = regression_female.predict([[year_to_predict]])
 
-def selecting_purok(df, purok):
-    df = df.loc[df['Purok'] == purok].copy()
-    df.drop(['Purok'], axis=1, inplace=True)
-    df = df.T
-    df.dropna(inplace=True)
-    df = df.reset_index()
-    return df
+        predicted_population_all_puroks.append({
+            'purok': purok,
+            'predicted_population': int(purok_df['count'].sum()) + int(predicted_population_purok[0]),
+            'population_count': int(purok_df['count'].sum()),
+            'growth_rate': regression.coef_[0],
+            'total_male': int(purok_df['male_count'].sum()),
+            'total_female': int(purok_df['female_count'].sum()),
+            'predicted_male_population': int(purok_df['male_count'].sum()) + int(predicted_male_population[0]),
+            'predicted_female_population': int(purok_df['female_count'].sum()) + int(predicted_female_population[0])
+        })
 
-def purok_list_gen(df):
-    df.rename(columns={'Purok Name':'Purok'},inplace=True)
-    df['Purok'] = df['Purok'].apply(lambda row: row.lower())
-    lists = df['Purok'].unique().tolist()
-    with open(f'{my_path}/purok_list.json','w', encoding='utf-8') as f:
-        json.dump(lists, f, ensure_ascii=False,indent=4)
-    return lists, df
-
-def get_population_prediction(start_year, end_year):
-    df = population_path
-    lists, df = purok_list_gen(df)
-    all_year_results = []
-
-    for prediction_year in range(start_year, end_year + 1):
-        year_result = {
-            "Year": prediction_year,
-            "PurokResults": []
-        }
-        for purok in lists:
-            df_purok = selecting_purok(df, purok)
-            model = prediction_model(df_purok)
-            result = prediction(model, prediction_year)
-            year_result["PurokResults"].append({'Purok': purok, 'Population': result})
-
-        all_year_results.append(year_result)
-    return all_year_results
-
-def generate_population_bar_plot(start_year, end_year):
-    purok_populations = {}
-    prediction_results = get_population_prediction(start_year, end_year)
-    for year_result in prediction_results:
-        for purok_result in year_result["PurokResults"]:
-            purok = purok_result["Purok"]
-            population = purok_result["Population"]
-            purok_populations.setdefault(purok, []).append(population)
+    cursor.close()
+    db.close()
     
-    df = pd.DataFrame(purok_populations, index=range(start_year, end_year + 1))
+    return jsonify({'predicted_population': predicted_population_all_puroks})
+
+
+
+
+
+
+@app.route('/predicted_population_table/<int:year_to_predict>', methods=['GET'])
+def get_predicted_population_table(year_to_predict):
+    query = """
+    SELECT 
+        purok, 
+        YEAR(created_at) AS year, 
+        COUNT(*) AS count,
+        SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
+        SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
+    FROM residents 
+    GROUP BY purok, YEAR(created_at)
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['purok', 'year', 'count', 'male_count', 'female_count'])
+
+    predicted_population_all_puroks = []
+
+    for purok in df['purok'].unique():
+        purok_df = df[df['purok'] == purok]
+        
+        if len(purok_df) < 2:
+            predicted_population_all_puroks.append([
+                purok,
+                None,
+                int(purok_df['count'].sum()),
+                None,
+                int(purok_df['male_count'].sum()),
+                int(purok_df['female_count'].sum()),
+                None,
+                None
+            ])
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            purok_df[['year']], 
+            purok_df['count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_population_purok = regression.predict([[year_to_predict]])
+
+        X_train_male, X_test_male, y_train_male, y_test_male = train_test_split(
+            purok_df[['year']], 
+            purok_df['male_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_male = LinearRegression()
+        regression_male.fit(X_train_male, y_train_male)
+        predicted_male_population = regression_male.predict([[year_to_predict]])
+
+        X_train_female, X_test_female, y_train_female, y_test_female = train_test_split(
+            purok_df[['year']], 
+            purok_df['female_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_female = LinearRegression()
+        regression_female.fit(X_train_female, y_train_female)
+        predicted_female_population = regression_female.predict([[year_to_predict]])
+
+        predicted_population_all_puroks.append([
+            purok,
+            int(purok_df['count'].sum()),
+            int(predicted_population_purok[0]),
+            int(purok_df['male_count'].sum()),
+            int(purok_df['female_count'].sum()),
+            int(predicted_male_population[0]),
+            int(predicted_female_population[0]),
+            regression.coef_[0]
+        ])
+
+    cursor.close()
+    db.close()
     
-    plt.figure(figsize=(16, 12))
-    df.plot(kind='bar', figsize=(16, 12))
-    plt.title('Population Prediction')
-    plt.xlabel('Year')
-    plt.ylabel('Population')
-    plt.legend()
+    draw = request.args.get('draw', type=int, default=0)
+    records_total = len(predicted_population_all_puroks)
+    records_filtered = records_total
+
+    return jsonify({
+        'draw': draw,
+        'recordsTotal': records_total,
+        'recordsFiltered': records_filtered,
+        'data': predicted_population_all_puroks
+    })
     
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close()
-    buf.seek(0)
-    return buf
-
-def generate_budget_bar_plot(start_year, end_year):
-    project_fund = {}
-    prediction_results = get_budget_prediction(start_year, end_year)
-    for year_result in prediction_results:
-        for project_result in year_result["ProjectResult"]:
-            project_name = project_result["Project"]
-            fund = project_result["Fund"]
-            project_fund.setdefault(project_name, []).append(fund)
     
-    df = pd.DataFrame(project_fund, index=range(start_year, end_year + 1))
+
+@app.route('/predicted_population_entire_purok/<int:year_to_predict>/', methods=['GET'])
+def get_predicted_population_entire_purok(year_to_predict):
+    query = "SELECT YEAR(created_at) AS year, COUNT(*) AS count FROM residents GROUP BY YEAR(created_at)"
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['year', 'count'])
+    X_train, X_test, y_train, y_test = train_test_split(df[['year']], df['count'], test_size=0.2, random_state=42)
+    regression = LinearRegression()
+    regression.fit(X_train, y_train)
+    predicted_population = regression.predict([[year_to_predict]])
+    growth_rate = regression.coef_[0]
+    population_count = int(df['count'].sum())
+    # print(f"Predicted population for the entire purok in year {year_to_predict}: {predicted_population[0]}")
+    # print(f"Growth rate: {growth_rate}")
+    cursor.close()
+    db.close()
+    return jsonify({
+        'predicted_population_entire_purok': int(predicted_population[0]),
+        'growth_rate': growth_rate,
+        'population_count': population_count
+    })
+
+@app.route('/predicted_purok/<int:year_to_predict>/<purok_name>', methods=['GET'])
+def get_predicted_purok_population(year_to_predict, purok_name):
+    query = f"SELECT purok, YEAR(created_at) AS year, COUNT(*) AS count FROM residents WHERE purok = '{purok_name}' GROUP BY purok, YEAR(created_at)"
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['purok', 'year', 'count'])
+    predicted_population_all_puroks = []
+    for purok in df['purok'].unique():
+        purok_df = df[df['purok'] == purok]
+        X_train, X_test, y_train, y_test = train_test_split(purok_df[['year']], purok_df['count'], test_size=0.2, random_state=42)
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_population_purok = regression.predict([[year_to_predict]])
+        predicted_population_all_puroks.append({
+            'purok': purok,
+            'predicted_population': int(predicted_population_purok[0]),
+            'population_count': int(purok_df['count'].sum())
+        })
+    # print(f"Predicted population for year {year_to_predict}: {predicted_population_all_puroks}")
+    cursor.close()
+    db.close()
+    return jsonify({'predicted_population': predicted_population_all_puroks})
+
+
+
+
+@app.route('/predicted_purok_sex', methods=['POST'])
+def get_predicted_purok_population_sex():
+    try:
+        data = request.get_json()
+        if not data or 'start_date' not in data or 'end_date' not in data or 'purok_name' not in data:
+            return jsonify({'error': 'Invalid input'}), 400
+        
+        start_date = data['start_date']
+        end_date = data['end_date']
+        purok_name = data['purok_name']
+        
+        # Extract the year from end_date
+        year_to_predict = datetime.datetime.strptime(end_date, "%Y-%m-%d").year + 1
+        
+        query = """
+        SELECT purok, YEAR(created_at) AS year, sex, COUNT(*) AS count 
+        FROM residents 
+        WHERE purok = %s AND created_at BETWEEN %s AND %s
+        GROUP BY purok, YEAR(created_at), sex
+        """
+        
+        db, cursor = database_connect()
+        cursor.execute(query, (purok_name, start_date, end_date))
+        data = cursor.fetchall()
+        df = pd.DataFrame(data, columns=['purok', 'year', 'sex', 'count'])
+        
+        predicted_population_all_puroks = []
+        
+        for purok in df['purok'].unique():
+            for sex in df['sex'].unique():
+                purok_sex_df = df[(df['purok'] == purok) & (df['sex'] == sex)]
+                
+                if len(purok_sex_df) < 2:
+                    predicted_population_all_puroks.append({
+                        'purok': purok,
+                        'sex': sex,
+                        'predicted_population': None,
+                        'population_count': int(purok_sex_df['count'].sum())
+                    })
+                    continue
+
+                X_train, X_test, y_train, y_test = train_test_split(
+                    purok_sex_df[['year']], 
+                    purok_sex_df['count'], 
+                    test_size=0.2, 
+                    random_state=42
+                )
+                regression = LinearRegression()
+                regression.fit(X_train, y_train)
+                predicted_population_purok_sex = regression.predict([[year_to_predict]])
+
+                predicted_population_all_puroks.append({
+                    'purok': purok,
+                    'sex': sex,
+                    'predicted_population': int(purok_sex_df['count'].sum() + predicted_population_purok_sex[0]),
+                    'population_count': int(purok_sex_df['count'].sum())
+                })
+        
+        cursor.close()
+        db.close()
+        
+        return jsonify({'predicted_population': predicted_population_all_puroks})
     
-    plt.figure(figsize=(16, 12))
-    df.plot(kind='bar', figsize=(16, 12))
-    plt.title('Population Prediction')
-    plt.xlabel('Year')
-    plt.ylabel('Population')
-    plt.legend()
+    except Exception as ex:
+        return jsonify({'error': str(ex)})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_budget/<int:year_to_predict>', methods=['GET'])
+def get_predicted_budget(year_to_predict):
+    query = """
+    SELECT 
+        pf.project_id, 
+        p.name AS project_name,
+        YEAR(pf.created_at) AS year, 
+        pf.fund
+    FROM project_fund pf
+    JOIN projects p ON pf.project_id = p.id
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['project_id', 'project_name', 'year', 'fund'])
+
+    predicted_budget_all_projects = []
+
+    for project_id in df['project_id'].unique():
+        project_df = df[df['project_id'] == project_id]
+        project_name = project_df['project_name'].iloc[0]
+
+        if len(project_df) < 2:
+            predicted_budget_all_projects.append({
+                'project_id': int(project_id),
+                'project_name': project_name,
+                'predicted_budget': None,
+                'total_fund': float(project_df['fund'].sum())
+            })
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            project_df[['year']], 
+            project_df['fund'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_budget = regression.predict([[year_to_predict]])
+
+        predicted_budget_all_projects.append({
+            'growth_rate': regression.coef_[0],
+            'project_id': int(project_id),
+            'project_name': project_name,
+            'predicted_budget': float(predicted_budget[0]),
+            'total_fund': float(project_df['fund'].sum())
+        })
+
+    cursor.close()
+    db.close()
     
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close()
-    buf.seek(0)
-    return buf
+    return jsonify({'predicted_budget': predicted_budget_all_projects})
 
-def generate_bar_year(start_year, end_year):
-    purok_populations = {}
-    prediction_results = get_population_prediction(start_year, end_year)
-    for year_result in prediction_results:
-        year = year_result["Year"]
-        total_population = sum(purok_result["Population"] for purok_result in year_result["PurokResults"])
-        purok_populations[year] = total_population
-    
-    df = pd.DataFrame(purok_populations.items(), columns=['Year', 'TotalPopulation'])
-    
-    plt.figure(figsize=(16, 12))
-    ax = df.plot(kind='bar', x='Year', y='TotalPopulation', figsize=(16, 12))
-    plt.title('Total Population Prediction by Year')
-    plt.xlabel('Year')
-    plt.ylabel('Total Population')
-    plt.legend()
-    
-    # Annotate each bar with the total population value
-    for index, value in enumerate(df['TotalPopulation']):
-        ax.annotate(f'Population {value:,}', (index, value), textcoords="offset points", xytext=(0,5), ha='center')
-    
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close()
-    buf.seek(0)
-    return buf
-    
-@app.route('/population', methods=['GET']) 
-def population():
-    start_year = 2028
-    end_year = 2028
-    results = get_population_prediction(start_year, end_year)
-    return render_template('population.html', results=results)
 
-@app.route('/budget', methods=['GET']) 
-def budget():
-    start_year = 2028
-    end_year = 2028
-    results = get_budget_prediction(start_year, end_year)
-    return render_template('budget.html', results=results)
 
-@app.route('/population-predict', methods=['POST'])
-def predict_population():
-    start_year = int(request.form['start_year'])
-    end_year = int(request.form['end_year'])
-    return render_template('population-datatable.html', results=get_population_prediction(start_year, end_year))
 
-@app.route('/budget-predict', methods=['POST'])
-def predict_budget():
-    start_year = int(request.form['start_year'])
-    end_year = int(request.form['end_year'])
-    return render_template('budget-datatable.html', results=get_budget_prediction(start_year, end_year))
 
-@app.route('/population-histogram', methods=['POST'])
-def graph_population():
-    start_year = int(request.form['start_year'])
-    end_year = int(request.form['end_year'])
-    buf = generate_population_bar_plot(start_year, end_year)
-    return Response(buf.getvalue(), mimetype='image/png')
 
-@app.route('/budget-histogram', methods=['POST'])
-def graph_budget():
-    start_year = int(request.form['start_year'])
-    end_year = int(request.form['end_year'])
-    buf = generate_budget_bar_plot(start_year, end_year)
-    return Response(buf.getvalue(), mimetype='image/png')
 
-@app.route('/population-bar_chart_image')
-def bar_chart_population():
-    start_year = 2023
-    end_year = 2024
-    image = generate_bar_year(start_year, end_year)
-    return send_file(image, mimetype='image/png')
+@app.route('/predicted_budget_table/<int:year_to_predict>', methods=['GET'])
+def get_predicted_budget_table(year_to_predict):
+    query = """
+    SELECT 
+        pf.project_id, 
+        p.name AS project_name,
+        YEAR(pf.created_at) AS year, 
+        pf.fund
+    FROM project_fund pf
+    JOIN projects p ON pf.project_id = p.id
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['project_id', 'project_name', 'year', 'fund'])
 
-@app.route('/budget-print', methods=['GET'])
-def budget_print():
-    current_year = datetime.datetime.now().year
-    return render_template('budget-print.html', results=get_budget_prediction(current_year, current_year + 10))
+    predicted_budget_all_projects = []
 
-@app.route('/population-print', methods=['GET'])
-def population_print():
-    current_year = datetime.datetime.now().year
-    return render_template('population-print.html', results=get_population_prediction(current_year, current_year + 10))
+    for project_id in df['project_id'].unique():
+        project_df = df[df['project_id'] == project_id]
+        project_name = project_df['project_name'].iloc[0]
 
-if __name__ =='__main__':  
+        if len(project_df) < 2:
+            predicted_budget_all_projects.append([
+                int(project_id),
+                project_name,
+                None,  # Growth rate
+                float(project_df['fund'].sum()),  # Total fund
+                None  # Predicted budget
+            ])
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            project_df[['year']], 
+            project_df['fund'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_budget = regression.predict([[year_to_predict]])
+
+        predicted_budget_all_projects.append([
+            int(project_id),
+            project_name,
+            float(project_df['fund'].sum()),  # Total fund
+            float(predicted_budget[0]),  # Predicted budget
+            regression.coef_[0]  # Growth rate
+        ])
+
+    cursor.close()
+    db.close()
+
+    draw = request.args.get('draw', type=int, default=0)
+    records_total = len(predicted_budget_all_projects)
+    records_filtered = records_total
+
+    return jsonify({
+        'draw': draw,
+        'recordsTotal': records_total,
+        'recordsFiltered': records_filtered,
+        'data': predicted_budget_all_projects
+    })
+
+
+
+
+
+
+@app.route('/predicted_budget_select', methods=['POST'])
+def get_predicted_budget_select():
+    try:
+        data = request.get_json()
+        if not data or 'start_date' not in data or 'end_date' not in data or 'budget_id' not in data:
+            return jsonify({'error': 'Invalid input'}), 400
+
+        start_date = data['start_date']
+        end_date = data['end_date']
+        budget_id = data['budget_id']
+        # Extract the year to predict from the end_date
+        year_to_predict = int(end_date[:4]) + 1
+
+        # Query to fetch the current budget for the specified budget ID and date range
+        current_budget_query = """
+        SELECT 
+            SUM(pf.fund) AS current_budget
+        FROM project_fund pf
+        WHERE project_id = %s AND pf.created_at BETWEEN %s AND %s
+        """
+        db, cursor = database_connect()
+        cursor.execute(current_budget_query, (budget_id, start_date, end_date))
+        current_budget_data = cursor.fetchone()
+        current_budget = current_budget_data[0] if current_budget_data else 0
+
+        # Query to fetch the historical fund data for the specified budget ID and date range
+        historical_fund_query = """
+        SELECT 
+            pf.project_id, 
+            YEAR(pf.created_at) AS year, 
+            SUM(pf.fund) AS total_fund
+        FROM project_fund pf
+        WHERE project_id = %s AND pf.created_at BETWEEN %s AND %s
+        GROUP BY pf.project_id, year
+        ORDER BY pf.project_id, year
+        """
+        cursor.execute(historical_fund_query, (budget_id, start_date, end_date))
+        historical_fund_data = cursor.fetchall()
+
+        predicted_budget_all_projects = []
+
+        for project_id in set(row[0] for row in historical_fund_data):
+            project_data = [(row[1], row[2]) for row in historical_fund_data if row[0] == project_id]
+            years = np.array([d[0] for d in project_data]).reshape(-1, 1)
+            funds = np.array([d[1] for d in project_data])
+
+            if len(set(years.flatten())) < 2:
+                # Not enough data to predict, append the last known fund
+                predicted_budget_all_projects.append({
+                    'project_id': project_id,
+                    'current_budget': float(current_budget),
+                    'predicted_budget': float(funds[-1])
+                })
+                continue
+
+            # Train a linear regression model to predict budget growth rate
+            X_train, X_test, y_train, y_test = train_test_split(years, funds, test_size=0.2, random_state=42)
+            regression = LinearRegression()
+            regression.fit(X_train, y_train)
+
+            # Predict the budget for the end date
+            predicted_budget = regression.predict([[year_to_predict]])[0]
+
+            predicted_budget_all_projects.append({
+                'project_id': project_id,
+                'current_budget': float(current_budget),
+                'predicted_budget': float(predicted_budget)
+            })
+
+        cursor.close()
+        db.close()
+
+        return jsonify({'predicted_budget': predicted_budget_all_projects})
+
+    except Exception as ex:
+        # print(ex)
+        return jsonify({'error': str(ex)}), 500
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
     computer_name = socket.gethostname()
     print(f"\nSERVER URL: http://{computer_name}.local/UMLTFIPG")
     print(f"LOCALHOST URL: http://localhost/UMLTFIPG")
-    print(f"SERVER PATH: \"{my_path}\"\n")
     app.run(debug=True, host='0.0.0.0')
