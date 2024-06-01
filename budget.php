@@ -16,6 +16,7 @@ $id = $_GET['id'];
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -27,7 +28,7 @@ $id = $_GET['id'];
                     <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link active" href="project.php">Project</a></li>
+                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link active" href="project.php">Funding</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="residents.php">Residents</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="staff.php">Staff</a></li>
                 </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
@@ -36,7 +37,7 @@ $id = $_GET['id'];
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Project Budget</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Fund</a>
+            <h3 class="text-success mb-0">Adding Fund</h3><a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#add" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Fund</a>
         </div>
         <div class="card shadow">
             <div class="card-header py-3">
@@ -44,7 +45,7 @@ $id = $_GET['id'];
             </div>
             <div class="card-body">
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <table class="table my-0 table-display" id="dataTable">
+                    <table class="table table-bordered my-0 table-display" id="dataTable">
                         <thead>
                             <tr>
                                 <th>Fund</th>
@@ -96,14 +97,11 @@ $id = $_GET['id'];
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
     <script src="assets/js/vfs_fonts.js"></script>
-    <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <script src="assets/js/main.js"></script>
 </body>

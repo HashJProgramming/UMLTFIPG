@@ -28,7 +28,7 @@ include_once 'functions/get-tables.php';
                     <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Project</a></li>
+                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link active" href="residents.php">Residents</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="staff.php">Staff</a></li>
                 </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
@@ -47,7 +47,7 @@ include_once 'functions/get-tables.php';
             </div>
             <div class="card-body">
                 <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped nowrap" cellspacing="0" id="dataTable">
+                    <table class="table table-bordered table-striped nowrap" cellspacing="0" id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>

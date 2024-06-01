@@ -25,7 +25,7 @@ if (isset($_SESSION['username'])){
     <section class="py-4 py-md-5 my-5">
         <div class="container py-md-5">
             <div class="row">
-                <div class="col-md-6 text-center"><img class="img-fluid w-80" src="assets/img/republic-of-the-philippines-clipart-6.jpg" width="512x"></div>
+                <div class="col-md-6 text-center"><img class="img-fluid w-80 d-none d-md-block" src="assets/img/republic-of-the-philippines-clipart-6.jpg" width="512x"></div>
                 <div class="col-md-5 col-xl-4 col-xxl-4 text-md-start border- rounded-2" style="box-shadow: 12px 13px 16px;">
                     <h2 class="display-6 fw-bold text-center mb-5 my-5"><span class="text-success underline"><strong>Login</strong></span></h2>
                     <form action="functions/login.php" method="post" data-bs-theme="light">

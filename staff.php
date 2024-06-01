@@ -17,6 +17,7 @@ include_once 'functions/get-tables.php';
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -28,7 +29,7 @@ include_once 'functions/get-tables.php';
                     <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Project</a></li>
+                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="residents.php">Residents</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link active" href="staff.php">Staff</a></li>
                 </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
@@ -45,7 +46,7 @@ include_once 'functions/get-tables.php';
             </div>
             <div class="card-body">
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <table class="table my-0 table-display" id="dataTable">
+                    <table class="table my-0 table-bordered table-display" id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -143,15 +144,11 @@ include_once 'functions/get-tables.php';
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
     <script src="assets/js/vfs_fonts.js"></script>
-    <script src="assets/js/jszip.min.js"></script>
-    <script src="assets/js/Application-Form-Bootstrap-Image-Uploader.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <script src="assets/js/main.js"></script>
 </body>

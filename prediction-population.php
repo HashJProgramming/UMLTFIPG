@@ -43,6 +43,7 @@ include_once 'functions/authentication.php';
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Links-icons.css">
+    <link href="assets/css/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -54,7 +55,7 @@ include_once 'functions/authentication.php';
                     <li class="nav-item"><a class="nav-link active" href="prediction-population.php">Prediction Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
-                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Project</a></li>
+                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="residents.php">Residents</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="staff.php">Staff</a></li>
                 </ul><a class="btn btn-outline-success" type="button" href="functions/logout.php">Logout</a>
@@ -64,6 +65,7 @@ include_once 'functions/authentication.php';
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-success mb-0">Prediction - Population</h3>
+            <a class="btn btn-success btn-sm link-light d-none d-sm-inline-block" role="button" href="#" data-bs-target="#view-table" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;View Table</a>
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
 <?php
@@ -119,6 +121,49 @@ echo "</ul>";
         </div>
     </div>
 
+    <div class="modal fade" role="dialog" tabindex="-1" id="view-table">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Table Population</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                    <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
+                        <table class="table table-striped nowrap" cellspacing="0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>PUROK</th>
+                                    <th>GROWTH RATE</th>
+                                    <th>POPULATION</th>
+                                    <th>PREDICTED POPULATION</th>
+                                    <th>POPULATION MALE</th>
+                                    <th>PREDICTED MALE</th>
+                                    <th>POPULATION FEMALE</th>
+                                    <th>PREDICTED FEMALE</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>PUROK</th>
+                                    <th>GROWTH RATE</th>
+                                    <th>POPULATION</th>
+                                    <th>PREDICTED POPULATION</th>
+                                    <th>POPULATION MALE</th>
+                                    <th>PREDICTED MALE</th>
+                                    <th>POPULATION FEMALE</th>
+                                    <th>PREDICTED FEMALE</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save</button></div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" role="dialog" tabindex="-1" id="predict-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -140,7 +185,7 @@ echo "</ul>";
                                 </div>
                             </div>
                             <div>
-                                <h4 class="text-center">ORCHIDS</h4>
+                                <h4 class="text-center" id="title_purok_name">ORCHIDS</h4>
                             <p class="text-center">Population</p>
                             <div class="d-flex justify-content-xl-center">
                                 <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pie-chart-fill">
@@ -182,17 +227,16 @@ echo "</ul>";
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button></div>
             </div>
         </div>
-        
+
+
+    
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
     <script src="assets/js/vfs_fonts.js"></script>
     <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
@@ -216,10 +260,10 @@ echo "</ul>";
                     data: jsonData,
                     contentType: 'application/json',
                     success: function(response) {
-                        // console.log(response);
+                        console.log(response);
 
                         var predictedPopulation = response.predicted_population;
-
+                        
                         var malePopulation = predictedPopulation.find(function(item) {
                             return item.sex === "Male";
                         });
@@ -228,37 +272,140 @@ echo "</ul>";
                             return item.sex === "Female";
                         });
 
-
-                        if (malePopulation) {
-                            $('#predicted_male').text(formatNumber(malePopulation.predicted_population));
-                        }
-
-                        if (femalePopulation) {
-                            $('#predicted_female').text(formatNumber(femalePopulation.predicted_population));
-                        }
-                        if (predictedPopulation) {
+                        if (predictedPopulation.length > 0) {
+                            if (malePopulation) {
+                                $('#predicted_male').text("Population " + formatNumber(malePopulation.predicted_population));
+                            }
+    
+                            if (femalePopulation) {
+                                $('#predicted_female').text("Population " + formatNumber(femalePopulation.predicted_population));
+                            }
                             var totalPopulation = (femalePopulation.predicted_population + malePopulation.predicted_population);
                             $('#predicted_total').text("Population " + formatNumber(totalPopulation));
+                        } else {
+                            swal.fire({
+                                title: 'Error',
+                                text: 'An error occurred while predicting the population',
+                                icon: 'error'
+                            });
                         }
                     },
                     error: function(error) {
-                        console.log(error);
+                        swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while predicting the population',
+                            icon: 'error'
+                        });
                     }
                 });
             });
+
+            
 
 
                 $(document).on("click", 'button[data-bs-target="#predict-modal"]', function () {
                     var id = $(this).data("id");
                     $('input[name="purok_name"]').val(id);
+                    $('#title_purok_name').text(id);
+                    $('#predicted_female').text("Population 0");
+                    $('#predicted_male').text("Population 0");
+                    $('#predicted_total').text("Population 0")
                     console.log(id);
                 });
                 
                 function formatNumber(number) {
-                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    try {
+                        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    } catch (error) {
+                        swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while predicting the population base on your input',
+                            icon: 'error'
+                        });
+                    }
                 }
+
+
+
+                $(document).on("click", 'a[data-bs-target="#view-table"]', function () {
+                    if (typeof table !== 'undefined' && $.fn.DataTable.isDataTable(table)) {
+                        table.destroy();
+                    }
+                    table = new DataTable("#dataTable", {
+                        ajax: 'http://localhost:5000/predicted_population_table/2029',
+                        processing: true,
+                        serverSide: true,
+                        pageLength: 50,
+                        dom: '<"top"Bfrtip<"clear">',
+                        buttons: [
+                            {
+                                extend: "excel",
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-file-excel"></i> EXCEL',
+                            },
+                            {
+                                extend: "pdf",
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-file-pdf"></i> PDF',
+                            },
+                            {
+                                extend: "print",
+                                className: "btn btn-primary",
+                                text: '<i class="fa fa-print"></i> Print',
+                                title:
+                                    "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                                autoPrint: true,
+                                exportOptions: {
+                                    columns: ":visible",
+                                },
+                                customize: function (win) {
+                                    $(win.document.body)
+                                        .find("table")
+                                        .addClass("display")
+                                        .css("font-size", "9px");
+                                    $(win.document.body)
+                                        .find("tr:nth-child(odd) td")
+                                        .each(function (index) {
+                                            $(this).css("background-color", "#D0D0D0");
+                                        });
+                                    $(win.document.body).find("h1").css("text-align", "center");
+                                },
+                            },
+                        ],
+                        responsive: {
+                            details: {
+                                display: DataTable.Responsive.display.modal({
+                                    header: function (row) {
+                                        var data = row.data();
+                                        return 'Details for ' + data[0];
+                                    }
+                                }),
+                                renderer: DataTable.Responsive.renderer.tableAll({
+                                    tableClass: 'table'
+                                })
+                            }
+                        },
+                        initComplete: function () {
+                            $('#dataTable').show();
+                        },
+                        drawCallback: function () {
+                            $('#dataTable').show();
+                        },
+                        preDrawCallback: function () {
+                            $('#dataTable').hide();
+                        }
+                    });
+                });
+
+
+
             });
     </script>
+    
 </body>
 
 </html>
