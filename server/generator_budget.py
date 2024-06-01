@@ -51,7 +51,7 @@ def insert_random_budget_data(project_id, num_entries):
 
 # Generate data for each project
 for project_id in project_ids:
-    insert_random_budget_data(project_id, 600)  # Generating 50 entries per project
+    insert_random_budget_data(project_id, 80000)  # Generating 50 entries per project
 
 # Commit the transaction and close the connection
 conn.commit()

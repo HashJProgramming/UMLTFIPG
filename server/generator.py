@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS residents (
 def generate_phone_number():
     return ''.join([str(random.randint(0, 9)) for _ in range(11)])
 
-for _ in range(3000):
+for _ in range(1000000):
     firstname = fake.first_name()
     lastname = fake.last_name()
     middlename = f"generated {random.randint(1, 1000)}"
