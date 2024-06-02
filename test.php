@@ -1,3 +1,9 @@
+<?php
+include_once 'functions/authentication.php';
+include_once 'functions/get-data.php';
+
+echo population_chart();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

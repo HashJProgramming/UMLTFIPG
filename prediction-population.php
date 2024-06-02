@@ -15,7 +15,7 @@ $response = curl_exec($ch);
 
 // Check for cURL errors
 if (curl_errno($ch)) {
-    die('cURL error: ' . curl_error($ch));
+    die('<h1>[SERVER] - Server was offline [Error Code: ' . curl_error($ch) . ']</h1>');
 }
 
 // Close the cURL session
@@ -53,7 +53,7 @@ include_once 'functions/authentication.php';
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link active" href="prediction-population.php">Prediction Population</a></li>
-                    <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="residents.php">Residents</a></li>
@@ -220,7 +220,29 @@ echo "</ul>";
                                         </div>
                                     </div>
                                 </div>
-                            </div><button class="btn btn-primary w-100" type="submit">Predict</button>
+                            </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-success fw-bold m-0">Population Overview</h6>
+                                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="chart-data" >
+                                            
+                                        </canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <button class="btn btn-primary w-100" type="submit">Predict</button>
                     </form>
                     </div>
                 </div>
@@ -238,9 +260,75 @@ echo "</ul>";
     <script src="assets/js/jszip.min.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <!-- <script src="assets/js/main.js"></script> -->
+    <script src="assets/js/chart.js"></script>
     <script>
         $(document).ready(function() {
+            var ctx = document.getElementById("chart-data").getContext("2d");
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],  // Empty initially
+                    datasets: [{
+                        label: 'Population',
+                        data: [],  // Empty initially
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        borderColor: 'rgba(78, 115, 223, 1)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                fontStyle: 'normal'
+                            }
+                        },
+                        title: {
+                            fontStyle: 'normal'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgb(234, 236, 244)',
+                                zeroLineColor: 'rgb(234, 236, 244)',
+                                drawBorder: false,
+                                drawTicks: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2],
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#858796',
+                                font: {
+                                    style: 'normal'
+                                },
+                                padding: 20
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgb(234, 236, 244)',
+                                zeroLineColor: 'rgb(234, 236, 244)',
+                                drawBorder: false,
+                                drawTicks: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            },
+                            ticks: {
+                                color: '#858796',
+                                font: {
+                                    style: 'normal'
+                                },
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
             
             $('form').submit(function(event) {
                 event.preventDefault();
@@ -253,6 +341,33 @@ echo "</ul>";
 
                 var jsonData = JSON.stringify(formData);
                 console.log(jsonData);
+
+                $.ajax({
+                    url: 'http://localhost/UMLTFIPG/functions/get-chart-population.php',
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // console.log(response);
+                        // Parse the JSON response
+                        var chartData = JSON.parse(response);
+                        
+                        // Update the chart's data and labels
+                        chart.data.labels = chartData.labels;
+                        chart.data.datasets[0].data = chartData.datasets[0].data;
+                        
+                        // Redraw the chart with the new data
+                        chart.update();
+                    },
+                    error: function(error) {
+                        swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while predicting the population',
+                            icon: 'error'
+                        });
+                    }
+                });
+
 
                 $.ajax({
                     url: 'http://127.0.0.1:5000/predicted_purok_sex',

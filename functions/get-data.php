@@ -183,4 +183,3 @@ function budget_month_chart(){
     <?php
 
   }
-  

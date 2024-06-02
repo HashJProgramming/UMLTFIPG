@@ -7,6 +7,7 @@ $password = $_POST['password'];
 $checkSql = 'SELECT COUNT(*) FROM users WHERE username = :username AND id != :id';
 $checkStmt = $db->prepare($checkSql);
 $checkStmt->bindParam(':username', $username);
+$checkStmt->bindParam(':id', $id);
 $checkStmt->execute();
 $count = $checkStmt->fetchColumn();
 
