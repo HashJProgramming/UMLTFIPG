@@ -19,7 +19,7 @@ if %errorlevel% == 1 (
     echo [=                                               UMLTFIPG System                                                 =]
     echo [=================================================================================================================]
     python -c "import sys; assert sys.version_info >= (3, 12, 0), 'Python version must be 3.12.0 or higher.'"
-    python server/app.py
+    python server/app_new.py
     pause
 ) else (
     call %VENV_PATH%
@@ -30,6 +30,6 @@ if %errorlevel% == 1 (
     echo [=                                               UMLTFIPG System                                                 =]
     echo [=================================================================================================================]
     python -c "import sys; assert sys.version_info >= (3, 12, 0), 'Python version must be 3.12.0 or higher.'"
-    python server/app.py
+    python server/app_new.py
     pause
 )
