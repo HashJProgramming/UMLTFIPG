@@ -20,14 +20,14 @@ $(document).ready(function () {
       {
         extend: "excel",
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         className: "btn btn-primary",
         text: '<i class="fa fa-file-excel"></i> EXCEL',
       },
       {
         extend: "pdf",
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         className: "btn btn-primary",
         text: '<i class="fa fa-file-pdf"></i> PDF',
       },
@@ -36,7 +36,7 @@ $(document).ready(function () {
         className: "btn btn-primary",
         text: '<i class="fa fa-print"></i> Print',
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         autoPrint: true,
         exportOptions: {
           columns: ":visible",
@@ -80,6 +80,7 @@ $(document).ready(function () {
     var phone = $(this).data("phone");
     var sex = $(this).data("sex");
     var address = $(this).data("address");
+    var barangay = $(this).data("barangay");
     var purok = $(this).data("purok");
 
     $('input[name="data_id"]').val(id);
@@ -91,9 +92,17 @@ $(document).ready(function () {
     $('input[name="phone"]').val(phone);
     $('input[name="sex"]').val(sex);
     $('input[name="address"]').val(address);
-    $('select[name="purok"]').val(purok);
+    $('select[name="barangay"]').val(barangay).trigger('change');
 
-    console.log(id, purok);
+    console.log(`Setting purok to: ${purok}`);
+    if ($('select[name="purok"] option[value="' + purok + '"]').length > 0) {
+        $('select[name="purok"]').val(purok).trigger('change');
+    } else {
+        // Add options to the purok select based on the selected barangay
+        populatePurokOptions(barangay, purok);
+    }
+
+    console.log(id, barangay, purok);
   });
 
   $(document).on("click", 'button[data-bs-target="#remove"]', function () {
@@ -101,4 +110,74 @@ $(document).ready(function () {
     $('input[name="data_id"]').val(id);
     console.log(id);
   });
+
+  const purokMapping = {
+    "Nilo": ["Purok 1", "Purok 2", "Purok 3", "Purok 4", "Purok 5", "Purok 6", "Purok 7"],
+    "Longmot": ["Paghimakas", "Pagbangon", "Pag-asa", "Pagkakaisa", "Pagpupunyagi", "Pagmamahal", "Paglinang", "Paglingap", "Pagdiriwang", "Pagkakaisa"],
+    "Caluma": ["Masipag", "Masagana", "Mataas", "Matatag", "Maunlad", "Magalang", "Magiliw", "Makisig", "Malakas", "Malusog"],
+    "Mate": ["Katapatan", "Karangalan", "Kagitingan", "Kalayaan", "Kabayanihan", "Kasipagan", "Kaalaman", "Kabaitan", "Kasaysayan", "Katotohanan"],
+    "Timolan": ["Dalandan", "Kalabasa", "Pakwan", "Melon", "Pinya", "Saging", "Lanzones", "Mangosteen", "Chico", "Bayabas"],
+    "Libayoy": ["Kalapati", "Maya", "Lawin", "Agila", "Tagak", "Ibon", "Pugo", "Kuwago", "Itik", "Bibe"],
+    "Guinlin": ["Alitaptap", "Paruparo", "Tutubi", "Gagamba", "Salagubang", "Lamok", "Bubuyog", "Tipaklong", "Langgam", "Uod"],
+    "Limas": ["Talon", "Batis", "Ilog", "Lawa", "Sapa", "Bukal", "Baybay", "Dalampasigan", "Tubig", "Buruwisan"],
+    "Maragang": ["Tala", "Bituin", "Araw", "Buwan", "Sinag", "Kalangitan", "Alapaap", "Ulap", "Silahis", "Hatinggabi"],
+    "Busol": ["Dagohoy", "Silang", "Luna", "Mabini", "Rizal", "Bonifacio", "Sakay", "Kudarat", "Tamblot", "Sulayman"],
+    "Diana Countryside": ["Buhay", "Liwanag", "Tahimik", "Kapayapaan", "Pagkakaisa", "Matatag", "Malaya", "Sipag", "Tiwala", "Pag-ibig"],
+    "Lacupayan": ["Banaba", "Kamagong", "Narra", "Molave", "Yakal", "Tindalo", "Mahogany", "Gmelina", "Mangga", "Santol"],
+    "Upper Nilo": ["Ilang-ilang", "Rosas", "Dama de Noche", "Rosal", "Magnolia", "Camia", "Santan", "Gumamela", "Sampaguita", "Kalachuchi"],
+    "Lacarayan": ["Silangan", "Kanluran", "Sikatuna", "Caraballo", "Pinatubo", "Apo", "Sierra Madre", "Banahaw", "Makiling", "Halcon"],
+    "Nangan-Nangan": ["Magsaysay", "Rizal", "Quezon", "Mabini", "Bonifacio", "Jacinto", "Luna", "Burgos", "Gomburza", "Del Pilar"],
+    "New Tuboran": ["Bulaklak", "Kaunlaran", "Kabataan", "Mayon", "Waling-waling", "Sinagtala", "Lakambini", "Haribon", "Sampaguita", "Salamat"],
+    "Tigbao": ["Maligaya", "Pag-asa", "Maharlika", "Masagana", "Kalikasan", "Mabuhay", "Bayanihan", "Katipunan", "Luntian", "Bagong Silang"]
+};
+
+  document.getElementById('barangay-select').addEventListener('change', function() {
+      const selectedBarangay = this.value;
+      const purokSelect = document.getElementById('purok-select');
+
+      purokSelect.innerHTML = '';
+
+      if (purokMapping[selectedBarangay]) {
+          purokMapping[selectedBarangay].forEach(purok => {
+              const option = document.createElement('option');
+              option.value = purok;
+              option.textContent = purok;
+              purokSelect.appendChild(option);
+          });
+      }
+  });
+
+  document.getElementById('barangay-select-update').addEventListener('change', function() {
+    const selectedBarangay = this.value;
+    const purokSelect = document.getElementById('purok-select-update');
+
+    purokSelect.innerHTML = '';
+
+    if (purokMapping[selectedBarangay]) {
+        purokMapping[selectedBarangay].forEach(purok => {
+            const option = document.createElement('option');
+            option.value = purok;
+            option.textContent = purok;
+            purokSelect.appendChild(option);
+        });
+    }
+});
+
+function populatePurokOptions(barangay, selectedPurok) {
+  const purokSelect = document.getElementById('purok-select-update');
+  purokSelect.innerHTML = '';
+
+  if (purokMapping[barangay]) {
+      purokMapping[barangay].forEach(purok => {
+          const option = document.createElement('option');
+          option.value = purok;
+          option.textContent = purok;
+          purokSelect.appendChild(option);
+      });
+
+      // Set the purok value after options are populated
+      purokSelect.value = selectedPurok;
+  }
+}
+
 });

@@ -30,6 +30,7 @@
               phone VARCHAR(255),
               sex VARCHAR(255),
               birthdate DATE,
+              barangay VARCHAR(255),
               status BOOLEAN DEFAULT 1,
               created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
@@ -100,6 +101,7 @@
               `middlename`, 
               `suffix`, 
               `purok`,
+              `barangay`,
               `address`, 
               `phone`, 
               `sex`, 

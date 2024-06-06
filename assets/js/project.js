@@ -19,14 +19,14 @@ $(document).ready(function () {
       {
         extend: "excel",
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         className: "btn btn-primary",
         text: '<i class="fa fa-file-excel"></i> EXCEL',
       },
       {
         extend: "pdf",
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         className: "btn btn-primary",
         text: '<i class="fa fa-file-pdf"></i> PDF',
       },
@@ -35,7 +35,7 @@ $(document).ready(function () {
         className: "btn btn-primary",
         text: '<i class="fa fa-print"></i> Print',
         title:
-          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+          "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
         autoPrint: true,
         exportOptions: {
           columns: ":visible",

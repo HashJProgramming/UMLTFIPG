@@ -13,18 +13,19 @@ $columns = array(
     array('db' => 'middlename', 'dt' => 3),
     array('db' => 'suffix', 'dt' => 4),
     array('db' => 'phone', 'dt' => 5),
-    array('db' => 'purok', 'dt' => 6),
-    array('db' => 'address', 'dt' => 7),
-    array('db' => 'sex', 'dt' => 8),
-    array('db' => 'age', 'dt' => 9),
-    array('db' => 'birthdate', 'dt' => 10),
-    array('db' => 'status', 'dt' => 11),
+    array('db' => 'barangay', 'dt' => 6),
+    array('db' => 'purok', 'dt' => 7),
+    array('db' => 'address', 'dt' => 8),
+    array('db' => 'sex', 'dt' => 9),
+    array('db' => 'age', 'dt' => 10),
+    array('db' => 'birthdate', 'dt' => 11),
+    array('db' => 'status', 'dt' => 12),
     array(
         'db' => 'id',
-        'dt' => 12,
+        'dt' => 13,
         'formatter' => function($d, $row) {
             return '<td class="text-center">
-                        <button class="btn btn-warning mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal" data-id="'.$row['id'].'" data-firstname="'.$row['firstname'].'" data-lastname="'.$row['lastname'].'" data-middlename="'.$row['middlename'].'" data-suffix="'.$row['suffix'].'" data-birthdate="'.$row['birthdate'].'" data-sex="'.$row['sex'].'" data-address="'.$row['address'].'" data-phone="'.$row['phone'].'" data-purok="'.$row['purok'].'">Update</button>
+                        <button class="btn btn-warning mx-1 mb-1" type="button" data-bs-target="#update" data-bs-toggle="modal" data-id="'.$row['id'].'" data-firstname="'.$row['firstname'].'" data-lastname="'.$row['lastname'].'" data-middlename="'.$row['middlename'].'" data-suffix="'.$row['suffix'].'" data-birthdate="'.$row['birthdate'].'" data-sex="'.$row['sex'].'" data-address="'.$row['address'].'" data-phone="'.$row['phone'].'" data-purok="'.$row['purok'].'" data-barangay="'.$row['barangay'].'">Update</button>
                         <button class="btn btn-danger mx-1 mb-1" type="button" data-bs-target="#remove" data-bs-toggle="modal" data-id="'.$row['id'].'">Remove</button>
                     </td>';
         }

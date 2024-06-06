@@ -12,7 +12,7 @@ $(document).ready(function () {
     console.log(jsonData);
 
     $.ajax({
-      url: "http://localhost/UMLTFIPG/functions/get-chart-population.php",
+      url: "http://localhost/UMLTFIPG/functions/get-chart-purok-population.php",
       type: "POST",
       data: jsonData,
       contentType: "application/json",
@@ -122,8 +122,10 @@ $(document).ready(function () {
     if (typeof table !== "undefined" && $.fn.DataTable.isDataTable(table)) {
       table.destroy();
     }
+    const currentYear = new Date().getFullYear();
+    const targetYear = currentYear + 5;
     table = new DataTable("#dataTable", {
-      ajax: "http://localhost:5000/predicted_population_table/2029",
+      ajax: `http://localhost:5000/predicted_purok_population_table/${targetYear}`,
       processing: true,
       serverSide: true,
       pageLength: 50,
@@ -132,14 +134,14 @@ $(document).ready(function () {
         {
           extend: "excel",
           title:
-            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
           className: "btn btn-primary",
           text: '<i class="fa fa-file-excel"></i> EXCEL',
         },
         {
           extend: "pdf",
           title:
-            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
           className: "btn btn-primary",
           text: '<i class="fa fa-file-pdf"></i> PDF',
         },
@@ -148,7 +150,7 @@ $(document).ready(function () {
           className: "btn btn-primary",
           text: '<i class="fa fa-print"></i> Print',
           title:
-            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+            "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
           autoPrint: true,
           exportOptions: {
             columns: ":visible",
@@ -157,7 +159,7 @@ $(document).ready(function () {
             $(win.document.body)
               .find("table")
               .addClass("display")
-              .css("font-size", "9px");
+              .css("font-size", "5px");
             $(win.document.body)
               .find("tr:nth-child(odd) td")
               .each(function (index) {

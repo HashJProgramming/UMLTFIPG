@@ -12,41 +12,7 @@ $(document).ready(function () {
     console.log(jsonData);
 
     $.ajax({
-      url: "http://localhost:5000/predicted_budget_select",
-      type: "POST",
-      data: jsonData,
-      contentType: "application/json",
-      success: function (response) {
-        console.log(response);
-
-        var predictedTotal = response.predicted_budget;
-        if (predictedTotal.length > 0) {
-          $("#predicted_total").text(
-            "Budget Predicted ₱" +
-              formatNumber(
-                predictedTotal[0].predicted_budget +
-                  predictedTotal[0].current_budget
-              )
-          );
-        } else {
-          swal.fire({
-            title: "Error",
-            text: "An error occurred while predicting the population",
-            icon: "error",
-          });
-        }
-      },
-      error: function (error) {
-        swal.fire({
-          title: "Error",
-          text: "An error occurred while predicting the population",
-          icon: "error",
-        });
-      },
-    });
-
-    $.ajax({
-      url: "http://localhost/UMLTFIPG/functions/get-chart-budget.php",
+      url: "http://localhost/UMLTFIPG/functions/get-chart-barangay-population.php",
       type: "POST",
       data: jsonData,
       contentType: "application/json",
@@ -65,7 +31,61 @@ $(document).ready(function () {
       error: function (error) {
         swal.fire({
           title: "Error",
-          text: "An error occurred while predicting the budget",
+          text: "An error occurred while predicting the population",
+          icon: "error",
+        });
+      },
+    });
+
+    $.ajax({
+      url: "http://localhost:5000/predicted_barangay_sex",
+      type: "POST",
+      data: jsonData,
+      contentType: "application/json",
+      success: function (response) {
+        console.log(response);
+
+        var predictedPopulation = response.predicted_population;
+
+        var malePopulation = predictedPopulation.find(function (item) {
+          return item.sex === "Male";
+        });
+
+        var femalePopulation = predictedPopulation.find(function (item) {
+          return item.sex === "Female";
+        });
+
+        if (predictedPopulation.length > 0) {
+          if (malePopulation) {
+            $("#predicted_male").text(
+              "Population " + formatNumber(malePopulation.predicted_population)
+            );
+          }
+
+          if (femalePopulation) {
+            $("#predicted_female").text(
+              "Population " +
+                formatNumber(femalePopulation.predicted_population)
+            );
+          }
+          var totalPopulation =
+            femalePopulation.predicted_population +
+            malePopulation.predicted_population;
+          $("#predicted_total").text(
+            "Population " + formatNumber(totalPopulation)
+          );
+        } else {
+          swal.fire({
+            title: "Error",
+            text: "An error occurred while predicting the population",
+            icon: "error",
+          });
+        }
+      },
+      error: function (error) {
+        swal.fire({
+          title: "Error",
+          text: "An error occurred while predicting the population",
           icon: "error",
         });
       },
@@ -77,17 +97,18 @@ $(document).ready(function () {
     'button[data-bs-target="#predict-modal"]',
     function () {
       var id = $(this).data("id");
-      var name = $(this).data("name");
-      $('input[name="budget_id"]').val(id);
-      $("#title_project_name").text(name);
-      $("#predicted_total").text("Budget Predicted ₱0");
-      console.log(id, name);
+      $('input[name="barangay_name"]').val(id);
+      $("#title_barangay_name").text(id);
+      $("#predicted_female").text("Population 0");
+      $("#predicted_male").text("Population 0");
+      $("#predicted_total").text("Population 0");
+      console.log(id);
     }
   );
 
   function formatNumber(number) {
     try {
-      return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } catch (error) {
       swal.fire({
         title: "Error",
@@ -101,8 +122,10 @@ $(document).ready(function () {
     if (typeof table !== "undefined" && $.fn.DataTable.isDataTable(table)) {
       table.destroy();
     }
+    const currentYear = new Date().getFullYear();
+    const targetYear = currentYear + 5;
     table = new DataTable("#dataTable", {
-      ajax: "http://localhost:5000/predicted_budget_table/2029",
+      ajax: `http://localhost:5000/predicted_barangay_population_table/${targetYear}`,
       processing: true,
       serverSide: true,
       pageLength: 50,
@@ -136,7 +159,7 @@ $(document).ready(function () {
             $(win.document.body)
               .find("table")
               .addClass("display")
-              .css("font-size", "9px");
+              .css("font-size", "5px");
             $(win.document.body)
               .find("tr:nth-child(odd) td")
               .each(function (index) {
@@ -156,31 +179,59 @@ $(document).ready(function () {
           }),
           renderer: DataTable.Responsive.renderer.tableAll({
             tableClass: "table",
-            modalClass: "modal-dialog-centered"
           }),
         },
+        modalCreated: function (modal) {
+          $(modal).find('.modal-dialog').addClass('modal-dialog-centered');
+        }
       },
       columnDefs: [
         {
+          targets: 1,
+          render: function (data, type, row) {
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          },
+        },
+        {
           targets: 2,
           render: function (data, type, row) {
-            return (
-              "₱" +
-              parseFloat(data)
-                .toFixed(2)
-                .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-            );
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           },
         },
         {
           targets: 3,
           render: function (data, type, row) {
-            return (
-              "₱" +
-              parseFloat(data)
-                .toFixed(2)
-                .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-            );
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          },
+        },
+        {
+          targets: 4,
+          render: function (data, type, row) {
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          },
+        },
+        {
+          targets: 5,
+          render: function (data, type, row) {
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          },
+        },
+        {
+          targets: 6,
+          render: function (data, type, row) {
+            return parseFloat(data)
+              .toFixed(0)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           },
         },
       ],

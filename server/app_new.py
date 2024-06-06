@@ -111,8 +111,146 @@ def get_predicted_population(year_to_predict):
 
 
 
-@app.route('/predicted_population_table/<int:year_to_predict>', methods=['GET'])
-def get_predicted_population_table(year_to_predict):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_barangay_population/<int:year_to_predict>', methods=['GET'])
+def get_predicted_barangay_population(year_to_predict):
+    query = """
+    SELECT 
+        barangay, 
+        YEAR(created_at) AS year, 
+        COUNT(*) AS count,
+        SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
+        SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
+    FROM residents 
+    WHERE status = '1'
+    GROUP BY barangay, YEAR(created_at)
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['barangay', 'year', 'count', 'male_count', 'female_count'])
+
+    predicted_population_all_barangay = []
+
+    for barangay in df['barangay'].unique():
+        barangay_df = df[df['barangay'] == barangay]
+        
+        if len(barangay_df) < 2:
+            # If there's not enough data to perform a train-test split, skip or handle differently
+            predicted_population_all_barangay.append({
+                'barangay': barangay,
+                'predicted_population': None,
+                'population_count': int(barangay_df['count'].sum()),
+                'growth_rate': None,
+                'total_male': int(barangay_df['male_count'].sum()),
+                'total_female': int(barangay_df['female_count'].sum()),
+                'predicted_male_population': None,
+                'predicted_female_population': None
+            })
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_population_barangay = regression.predict([[year_to_predict]])
+
+        X_train_male, X_test_male, y_train_male, y_test_male = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['male_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_male = LinearRegression()
+        regression_male.fit(X_train_male, y_train_male)
+        predicted_male_population = regression_male.predict([[year_to_predict]])
+
+        X_train_female, X_test_female, y_train_female, y_test_female = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['female_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_female = LinearRegression()
+        regression_female.fit(X_train_female, y_train_female)
+        predicted_female_population = regression_female.predict([[year_to_predict]])
+
+        predicted_population_all_barangay.append({
+            'barangay': barangay,
+            'predicted_population': int(barangay_df['count'].sum()) + int(predicted_population_barangay[0]),
+            'population_count': int(barangay_df['count'].sum()),
+            'growth_rate': regression.coef_[0],
+            'total_male': int(barangay_df['male_count'].sum()),
+            'total_female': int(barangay_df['female_count'].sum()),
+            'predicted_male_population': int(barangay_df['male_count'].sum()) + int(predicted_male_population[0]),
+            'predicted_female_population': int(barangay_df['female_count'].sum()) + int(predicted_female_population[0])
+        })
+
+    cursor.close()
+    db.close()
+    
+    return jsonify({'predicted_population': predicted_population_all_barangay})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_purok_population_table/<int:year_to_predict>', methods=['GET'])
+def get_predicted_purok_population_table(year_to_predict):
     query = """
     SELECT 
         purok, 
@@ -201,6 +339,196 @@ def get_predicted_population_table(year_to_predict):
         'recordsFiltered': records_filtered,
         'data': predicted_population_all_puroks
     })
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_barangay_population_table/<int:year_to_predict>', methods=['GET'])
+def get_predicted_barangay_population_table(year_to_predict):
+    query = """
+    SELECT 
+        barangay, 
+        YEAR(created_at) AS year, 
+        COUNT(*) AS count,
+        SUM(CASE WHEN sex = 'male' THEN 1 ELSE 0 END) AS male_count,
+        SUM(CASE WHEN sex = 'female' THEN 1 ELSE 0 END) AS female_count
+    FROM residents 
+    WHERE status = '1'
+    GROUP BY barangay, YEAR(created_at)
+    """
+    db, cursor = database_connect()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['barangay', 'year', 'count', 'male_count', 'female_count'])
+
+    predicted_population_all_barangays = []
+
+    for barangay in df['barangay'].unique():
+        barangay_df = df[df['barangay'] == barangay]
+        
+        if len(barangay_df) < 2:
+            predicted_population_all_barangays.append([
+                barangay,
+                None,
+                int(barangay_df['count'].sum()),
+                None,
+                int(barangay_df['male_count'].sum()),
+                int(barangay_df['female_count'].sum()),
+                None,
+                None
+            ])
+            continue
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression = LinearRegression()
+        regression.fit(X_train, y_train)
+        predicted_population_barangay = regression.predict([[year_to_predict]])
+
+        X_train_male, X_test_male, y_train_male, y_test_male = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['male_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_male = LinearRegression()
+        regression_male.fit(X_train_male, y_train_male)
+        predicted_male_population = regression_male.predict([[year_to_predict]])
+
+        X_train_female, X_test_female, y_train_female, y_test_female = train_test_split(
+            barangay_df[['year']], 
+            barangay_df['female_count'], 
+            test_size=0.2, 
+            random_state=42
+        )
+        regression_female = LinearRegression()
+        regression_female.fit(X_train_female, y_train_female)
+        predicted_female_population = regression_female.predict([[year_to_predict]])
+
+        predicted_population_all_barangays.append([
+            barangay,
+            int(barangay_df['count'].sum()),
+            int(predicted_population_barangay[0]),
+            int(barangay_df['male_count'].sum()),
+            int(barangay_df['female_count'].sum()),
+            int(predicted_male_population[0]),
+            int(predicted_female_population[0]),
+            regression.coef_[0]
+        ])
+
+    cursor.close()
+    db.close()
+    
+    draw = request.args.get('draw', type=int, default=0)
+    records_total = len(predicted_population_all_barangays)
+    records_filtered = records_total
+
+    return jsonify({
+        'draw': draw,
+        'recordsTotal': records_total,
+        'recordsFiltered': records_filtered,
+        'data': predicted_population_all_barangays
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
 
@@ -337,6 +665,147 @@ def get_predicted_purok_population_sex():
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/predicted_barangay_sex', methods=['POST'])
+def get_predicted_barangay_population_sex():
+    try:
+        data = request.get_json()
+        if not data or 'start_date' not in data or 'end_date' not in data or 'barangay_name' not in data:
+            return jsonify({'error': 'Invalid input'}), 400
+        
+        start_date = data['start_date']
+        end_date = data['end_date']
+        barangay_name = data['barangay_name']
+        
+        # Extract the year from end_date
+        year_to_predict = datetime.datetime.strptime(end_date, "%Y-%m-%d").year + 1
+        
+        query = """
+        SELECT barangay, YEAR(created_at) AS year, sex, COUNT(*) AS count 
+        FROM residents 
+        WHERE barangay = %s AND status = '1' AND created_at BETWEEN %s AND %s
+        GROUP BY barangay, YEAR(created_at), sex
+        """
+        
+        db, cursor = database_connect()
+        cursor.execute(query, (barangay_name, start_date, end_date))
+        data = cursor.fetchall()
+        df = pd.DataFrame(data, columns=['barangay', 'year', 'sex', 'count'])
+        
+        predicted_population_all_barangays = []
+        
+        for barangay in df['barangay'].unique():
+            for sex in df['sex'].unique():
+                barangay_sex_df = df[(df['barangay'] == barangay) & (df['sex'] == sex)]
+                
+                if len(barangay_sex_df) < 2:
+                    predicted_population_all_barangays.append({
+                        'barangay': barangay,
+                        'sex': sex,
+                        'predicted_population': None,
+                        'population_count': int(barangay_sex_df['count'].sum())
+                    })
+                    continue
+
+                X_train, X_test, y_train, y_test = train_test_split(
+                    barangay_sex_df[['year']], 
+                    barangay_sex_df['count'], 
+                    test_size=0.2, 
+                    random_state=42
+                )
+                regression = LinearRegression()
+                regression.fit(X_train, y_train)
+                predicted_population_barangay_sex = regression.predict([[year_to_predict]])
+
+                predicted_population_all_barangays.append({
+                    'barangay': barangay,
+                    'sex': sex,
+                    'predicted_population': int(barangay_sex_df['count'].sum() + predicted_population_barangay_sex[0]),
+                    'population_count': int(barangay_sex_df['count'].sum())
+                })
+        
+        cursor.close()
+        db.close()
+        
+        return jsonify({'predicted_population': predicted_population_all_barangays})
+    
+    except Exception as ex:
+        return jsonify({'error': str(ex)})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/predicted_budget/<int:year_to_predict>', methods=['GET'])
 def get_predicted_budget(year_to_predict):
     query = """
@@ -390,6 +859,46 @@ def get_predicted_budget(year_to_predict):
     db.close()
     
     return jsonify({'predicted_budget': predicted_budget_all_projects})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -460,6 +969,32 @@ def get_predicted_budget_table(year_to_predict):
         'recordsFiltered': records_filtered,
         'data': predicted_budget_all_projects
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -543,14 +1078,6 @@ def get_predicted_budget_select():
     except Exception as ex:
         # print(ex)
         return jsonify({'error': str(ex)}), 500
-
-
-
-
-
-
-
-
 
 
 

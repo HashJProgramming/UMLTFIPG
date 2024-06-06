@@ -9,7 +9,7 @@ include_once 'functions/get-tables.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Residents - UMLTFIPG</title>
-    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
+    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -25,7 +25,7 @@ include_once 'functions/get-tables.php';
             <div class="collapse navbar-collapse" id="navcol-3">
             <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-purok-population.php">Prediction Population</a></li>
                     <li class="nav-item"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
@@ -56,6 +56,7 @@ include_once 'functions/get-tables.php';
                                 <th>Middlename</th>
                                 <th>Suffix</th>
                                 <th>Phone</th>
+                                <th>Barangay</th>
                                 <th>Purok</th>
                                 <th>Address</th>
                                 <th>Sex</th>
@@ -73,6 +74,7 @@ include_once 'functions/get-tables.php';
                                 <th>Middlename</th>
                                 <th>Suffix</th>
                                 <th>Phone</th>
+                                <th>Barangay</th>
                                 <th>Purok</th>
                                 <th>Address</th>
                                 <th>Sex</th>
@@ -137,29 +139,40 @@ include_once 'functions/get-tables.php';
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <p><strong>Purok</strong><span class="text-danger">*</span></p><select class="form-select" name="purok">
+                                            <p><strong>Barangay</strong><span class="text-danger">*</span></p>
+                                            <select class="form-select" name="barangay" id="barangay-select">
+                                                <optgroup label="SELECT BARANGAY">
+                                                    <option value="Nilo">Nilo</option>
+                                                    <option value="Longmot">Longmot</option>
+                                                    <option value="Caluma">Caluma</option>
+                                                    <option value="Mate">Mate</option>
+                                                    <option value="Timolan">Timolan</option>
+                                                    <option value="Libayoy">Libayoy</option>
+                                                    <option value="Guinlin">Guinlin</option>
+                                                    <option value="Limas">Limas</option>
+                                                    <option value="Maragang">Maragang</option>
+                                                    <option value="Busol">Busol</option>
+                                                    <option value="Diana Countryside">Diana Countryside</option>
+                                                    <option value="Lacupayan">Lacupayan</option>
+                                                    <option value="Upper Nilo">Upper Nilo</option>
+                                                    <option value="Lacarayan">Lacarayan</option>
+                                                    <option value="Nangan-Nangan">Nangan-Nangan</option>
+                                                    <option value="New Tuboran">New Tuboran</option>
+                                                    <option value="Tigbao">Tigbao</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <p><strong>Purok</strong><span class="text-danger">*</span></p>
+                                            <select class="form-select" name="purok" id="purok-select">
                                                 <optgroup label="SELECT PUROK">
-                                                <option value="Acasia">Acasia</option>
-                                                <option value="Imelda I">Imelda I</option>
-                                                <option value="Imelda II">Imelda II</option>
-                                                <option value="Orchids">Orchids</option>
-                                                <option value="Mendoza">Mendoza</option>
-                                                <option value="Alcantara">Alcantara</option>
-                                                <option value="Bougainvilla">Bougainvilla</option>
-                                                <option value="Makugihon">Makugihon</option>
-                                                <option value="Rose">Rose</option>
-                                                <option value="Pelagio">Pelagio</option>
-                                                <option value="Enriquez">Enriquez</option>
-                                                <option value="Magsaysay">Magsaysay</option>
-                                                <option value="Gawasnon">Gawasnon</option>
-                                                <option value="Boundary">Boundary</option>
-                                                <option value="Pechay">Pechay</option>
-                                                <option value="San Francisco">San Francisco</option>
-                                                <option value="Cresencio Sajulga">Cresencio Sajulga</option>
-                                                <option value="Beti">Beti</option>
-                                                <option value="Lecuna">Lecuna</option>
-                                                <option value="Macrina">Macrina</option>
-                                                <option value="Durias">Durias</option>
+                                                    <option value="Purok 1">Purok 1</option>
+                                                    <option value="Purok 2">Purok 2</option>
+                                                    <option value="Purok 3">Purok 3</option>
+                                                    <option value="Purok 4">Purok 4</option>
+                                                    <option value="Purok 5">Purok 5</option>
+                                                    <option value="Purok 6">Purok 6</option>
+                                                    <option value="Purok 7">Purok 7</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -235,29 +248,40 @@ include_once 'functions/get-tables.php';
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <p><strong>Purok</strong><span class="text-danger">*</span></p><select class="form-select" name="purok">
+                                            <p><strong>Barangay</strong><span class="text-danger">*</span></p>
+                                            <select class="form-select" name="barangay" id="barangay-select-update">
+                                                <optgroup label="SELECT BARANGAY">
+                                                    <option value="Nilo">Nilo</option>
+                                                    <option value="Longmot">Longmot</option>
+                                                    <option value="Caluma">Caluma</option>
+                                                    <option value="Mate">Mate</option>
+                                                    <option value="Timolan">Timolan</option>
+                                                    <option value="Libayoy">Libayoy</option>
+                                                    <option value="Guinlin">Guinlin</option>
+                                                    <option value="Limas">Limas</option>
+                                                    <option value="Maragang">Maragang</option>
+                                                    <option value="Busol">Busol</option>
+                                                    <option value="Diana Countryside">Diana Countryside</option>
+                                                    <option value="Lacupayan">Lacupayan</option>
+                                                    <option value="Upper Nilo">Upper Nilo</option>
+                                                    <option value="Lacarayan">Lacarayan</option>
+                                                    <option value="Nangan-Nangan">Nangan-Nangan</option>
+                                                    <option value="New Tuboran">New Tuboran</option>
+                                                    <option value="Tigbao">Tigbao</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <p><strong>Purok</strong><span class="text-danger">*</span></p>
+                                            <select class="form-select" name="purok" id="purok-select-update">
                                                 <optgroup label="SELECT PUROK">
-                                                <option value="Acasia">Acasia</option>
-                                                <option value="Imelda I">Imelda I</option>
-                                                <option value="Imelda II">Imelda II</option>
-                                                <option value="Orchids">Orchids</option>
-                                                <option value="Mendoza">Mendoza</option>
-                                                <option value="Alcantara">Alcantara</option>
-                                                <option value="Bougainvilla">Bougainvilla</option>
-                                                <option value="Makugihon">Makugihon</option>
-                                                <option value="Rose">Rose</option>
-                                                <option value="Pelagio">Pelagio</option>
-                                                <option value="Enriquez">Enriquez</option>
-                                                <option value="Magsaysay">Magsaysay</option>
-                                                <option value="Gawasnon">Gawasnon</option>
-                                                <option value="Boundary">Boundary</option>
-                                                <option value="Pechay">Pechay</option>
-                                                <option value="San Francisco">San Francisco</option>
-                                                <option value="Cresencio Sajulga">Cresencio Sajulga</option>
-                                                <option value="Beti">Beti</option>
-                                                <option value="Lecuna">Lecuna</option>
-                                                <option value="Macrina">Macrina</option>
-                                                <option value="Durias">Durias</option>
+                                                    <option value="Purok 1">Purok 1</option>
+                                                    <option value="Purok 2">Purok 2</option>
+                                                    <option value="Purok 3">Purok 3</option>
+                                                    <option value="Purok 4">Purok 4</option>
+                                                    <option value="Purok 5">Purok 5</option>
+                                                    <option value="Purok 6">Purok 6</option>
+                                                    <option value="Purok 7">Purok 7</option>
                                                 </optgroup>
                                             </select>
                                         </div>

@@ -1,7 +1,7 @@
 <?php
 // Define the API URL
 $getCurrentYear = date("Y") + 5;
-$apiUrl = "http://localhost:5000/predicted_population/$getCurrentYear";
+$apiUrl = "http://localhost:5000/predicted_barangay_population/$getCurrentYear";
 
 // Using cURL for more robust error handling
 $ch = curl_init();
@@ -38,7 +38,7 @@ include_once 'functions/authentication.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Prediction Population - UMLTFIPG</title>
-    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
+    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/css/Application-Form.css">
@@ -52,7 +52,8 @@ include_once 'functions/authentication.php';
             <div class="collapse navbar-collapse" id="navcol-3">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="prediction-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-purok-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="prediction-barangay-population.php">Prediction Barangay Population</a></li>
                     <li class="nav-item"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link" href="project.php">Funding</a></li>
@@ -64,12 +65,12 @@ include_once 'functions/authentication.php';
     </nav>
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-success mb-0">Prediction - Population</h3>
+            <h3 class="text-success mb-0">Prediction - Barangay Population</h3>
             <a class="btn btn-success btn-sm link-light " role="button" href="#" data-bs-target="#view-table" data-bs-toggle="modal"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;View Table</a>
         </div>
-        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-2">
 <?php
-foreach ($data['predicted_population'] as $purok) {
+foreach ($data['predicted_population'] as $barangay) {
          echo "
          <div class='col'>
                 <div class='card mt-1 mb-1'>
@@ -78,12 +79,12 @@ foreach ($data['predicted_population'] as $purok) {
                                 <path d='M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z'></path>
                             </svg></div>
                         <div>
-                            <h4 class='text-center'>".htmlspecialchars($purok['purok'])."</h4>
+                            <h4 class='text-center'>".htmlspecialchars($barangay['barangay'])."</h4>
                             <p class='text-center'>Population</p>
                             <div></div>
                             <div class='d-xl-flex justify-content-xl-center'>
-                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Population ".htmlspecialchars(number_format($purok['population_count'], 0))."</span>
-                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Predicted ". htmlspecialchars(number_format($purok['predicted_population'], 0)) ."</span></div>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Population ".htmlspecialchars(number_format($barangay['population_count'], 0))."</span>
+                            <span class='badge bg-dark fs-5 mx-1 mt-1'>Predicted ". htmlspecialchars(number_format($barangay['predicted_population'], 0)) ."</span></div>
                             <div class='mb-3 mt-3'>
                                 <div class='row'>
                                     <div class='col'>
@@ -92,7 +93,7 @@ foreach ($data['predicted_population'] as $purok) {
                                                     <path fill-rule='evenodd' d='M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8'></path>
                                                 </svg></div>
                                             <div class='text-center'>
-                                                <p class='fw-bold mb-0'>Male</p><span class='badge bg-primary'>Population ".htmlspecialchars(number_format($purok['total_male'], 0))."</span>
+                                                <p class='fw-bold mb-0'>Male</p><span class='badge bg-primary'>Population ".htmlspecialchars(number_format($barangay['total_male'], 0))."</span>
                                             </div>
                                         </div>
                                     </div>
@@ -102,12 +103,12 @@ foreach ($data['predicted_population'] as $purok) {
                                                     <path fill-rule='evenodd' d='M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5'></path>
                                                 </svg></div>
                                             <div class='text-center'>
-                                                <p class='fw-bold mb-0'>Female</p><span class='badge bg-danger'>Population ".htmlspecialchars(number_format($purok['total_female'], 0))."</span>
+                                                <p class='fw-bold mb-0'>Female</p><span class='badge bg-danger'>Population ".htmlspecialchars(number_format($barangay['total_female'], 0))."</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div><button class='btn btn-primary w-100' type='button' data-bs-target='#predict-modal' data-bs-toggle='modal' data-id='".htmlspecialchars($purok['purok'])."'>Predict</button>
+                            </div><button class='btn btn-primary w-100' type='button' data-bs-target='#predict-modal' data-bs-toggle='modal' data-id='".htmlspecialchars($barangay['barangay'])."'>Predict</button>
                         </div>
                     </div>
                 </div>
@@ -172,7 +173,7 @@ echo "</ul>";
                 </div>
                 <div class="modal-body">
                     <form>
-                        <input type="hidden" name="purok_name">
+                        <input type="hidden" name="barangay_name">
                         <p>Here you can manually predict. </p>
                             <div class="container">
                                 <div class="row">
@@ -185,7 +186,7 @@ echo "</ul>";
                                 </div>
                             </div>
                             <div>
-                                <h4 class="text-center" id="title_purok_name">ORCHIDS</h4>
+                                <h4 class="text-center" id="title_barangay_name">ORCHIDS</h4>
                             <p class="text-center">Population</p>
                             <div class="d-flex justify-content-xl-center">
                                 <div class="bs-icon-sm bs-icon-circle bs-icon-primary-light d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon mx-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pie-chart-fill">
@@ -262,8 +263,8 @@ echo "</ul>";
     <script src="assets/js/sweetalert2.all.min.js"></script>
     <!-- <script src="assets/js/main.js"></script> -->
     <script src="assets/js/chart.js"></script>
-    <script src="assets/js/chart-layout.js"></script>                                           
-     <script src="assets/js/prediction-population.js"></script>                                           
+    <script src="assets/js/chart-population-layout.js"></script>                                           
+     <script src="assets/js/prediction-barangay-population.js"></script>                                           
 </body>
 
 </html>

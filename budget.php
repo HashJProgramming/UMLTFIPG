@@ -10,7 +10,7 @@ $id = $_GET['id'];
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Project Funds - UMLTFIPG</title>
-    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong">
+    <meta name="description" content="UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -25,7 +25,8 @@ $id = $_GET['id'];
             <div class="collapse navbar-collapse" id="navcol-3">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="prediction-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-purok-population.php">Prediction Population</a></li>
+                    <li class="nav-item"><a class="nav-link" href="prediction-barangay-population.php">Prediction Barangay Population</a></li>
                     <li class="nav-item"><a class="nav-link" href="prediction-budget.php">Prediction Budget</a></li>
                     <li class="nav-item"><a class="nav-link" href="population.php">Population</a></li>
                     <li class="nav-item <?php if($_SESSION['type'] == 'Staff'){echo "d-none";} else {echo "d-block";}?>"><a class="nav-link active" href="project.php">Funding</a></li>
@@ -133,13 +134,13 @@ $id = $_GET['id'];
                 buttons: [
                     {
                         extend: "excel",
-                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
                         className: "btn btn-primary",
                         text: '<i class="fa fa-file-excel"></i> EXCEL',
                     },
                     {
                         extend: "pdf",
-                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
                         className: "btn btn-primary",
                         text: '<i class="fa fa-file-pdf"></i> PDF',
                     },
@@ -147,7 +148,7 @@ $id = $_GET['id'];
                         extend: "print",
                         className: "btn btn-primary",
                         text: '<i class="fa fa-print"></i> Print',
-                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth on the Budget of Barangay Begong",
+                        title: "UMLTFIPG - Utilizing Machine Learning Technique to Forecast the Influence of Population Growth",
                         autoPrint: true,
                         exportOptions: {
                             columns: ":visible",

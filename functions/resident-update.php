@@ -10,6 +10,7 @@ $phone = $_POST['phone'];
 $sex = $_POST['sex'];
 $birthdate = $_POST['birthdate'];
 $purok = $_POST['purok'];
+$barangay = $_POST['barangay'];
 $resident_status = $_POST['resident_status'];
 $fullname = $firstname.' '.$lastname.' '.$middlename.' '.$suffix;
 
@@ -24,6 +25,7 @@ SET `firstname` = :firstname,
 `sex` = :sex, 
 `birthdate` = :birthdate, 
 `purok` = :purok,
+`barangay` = :barangay,
 `status` = :resident_status
 WHERE id = :id";
 
@@ -37,6 +39,7 @@ $stmt->bindParam(':phone', $phone);
 $stmt->bindParam(':sex', $sex);
 $stmt->bindParam(':birthdate', $birthdate);
 $stmt->bindParam(':purok', $purok);
+$stmt->bindParam(':barangay', $barangay);
 $stmt->bindParam(':resident_status', $resident_status);
 $stmt->bindParam(':id', $id);
 $stmt->execute();
