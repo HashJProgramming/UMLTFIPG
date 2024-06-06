@@ -1,5 +1,6 @@
 <?php
 include_once 'connection.php';
+header('Access-Control-Allow-Origin: *');
 
 // Get the raw POST data
 $postData = file_get_contents('php://input');

@@ -12,7 +12,7 @@ $(document).ready(function () {
     console.log(jsonData);
 
     $.ajax({
-      url: "http://192.168.100.4/UMLTFIPG/functions/get-chart-population.php",
+      url: "http://localhost/UMLTFIPG/functions/get-chart-population.php",
       type: "POST",
       data: jsonData,
       contentType: "application/json",
@@ -38,7 +38,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-      url: "http://192.168.100.4:5000/predicted_purok_sex",
+      url: "http://localhost:5000/predicted_purok_sex",
       type: "POST",
       data: jsonData,
       contentType: "application/json",
@@ -123,7 +123,7 @@ $(document).ready(function () {
       table.destroy();
     }
     table = new DataTable("#dataTable", {
-      ajax: "http://192.168.100.4:5000/predicted_population_table/2029",
+      ajax: "http://localhost:5000/predicted_population_table/2029",
       processing: true,
       serverSide: true,
       pageLength: 50,
