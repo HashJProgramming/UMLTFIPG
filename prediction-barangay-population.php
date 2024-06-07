@@ -134,7 +134,7 @@ echo "</ul>";
                         <table class="table table-striped nowrap" cellspacing="0" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>PUROK</th>
+                                    <th>BARANGAY</th>
                                     <th>POPULATION</th>
                                     <th>PREDICTED POPULATION</th>
                                     <th>POPULATION MALE</th>
@@ -146,7 +146,7 @@ echo "</ul>";
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>PUROK</th>
+                                    <th>BARANGAY</th>
                                     <th>POPULATION</th>
                                     <th>PREDICTED POPULATION</th>
                                     <th>POPULATION MALE</th>

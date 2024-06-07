@@ -12,7 +12,7 @@ $(document).ready(function () {
     console.log(jsonData);
 
     $.ajax({
-      url: "http://localhost/UMLTFIPG/functions/get-chart-barangay-population.php",
+      url: "functions/get-chart-barangay-population.php",
       type: "POST",
       data: jsonData,
       contentType: "application/json",
